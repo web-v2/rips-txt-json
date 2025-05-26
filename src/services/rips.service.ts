@@ -4,7 +4,6 @@ import {
   Consulta,
   Procedimiento,
 } from "../types/rips.interfaces";
-import { UsuarioSchema } from "../models/usuario";
 export class RipsService {
   private cambiarFormatoFecha(fecha: string): string {
     let partes = fecha.split("/");
@@ -50,12 +49,6 @@ export class RipsService {
       const fechaNacimiento = this.cambiarFormatoFecha(fechaNacimientoA);
       const consecutivo = parseInt(consecutivoStr) || index + 1;
 
-      /*  try {
-        UsuarioSchema.parse(Usuario); // validación aquí
-      } catch (error: any) {
-        throw new Error(`Error en el usuario: ${error.message}`);
-      } */
-
       return {
         tipoDocumentoIdentificacion,
         numDocumentoIdentificacion,
@@ -82,9 +75,9 @@ export class RipsService {
 
     return lines.map((line, index) => {
       const valores = line.split(",");
-      if (valores.length !== 11) {
+      if (valores.length !== 22) {
         throw new Error(
-          `Error en los Usuarios ${index + 1}: cantidad incorrecta de columnas`
+          `Error en las Consultas ${index + 1}: cantidad incorrecta de columnas`
         );
       }
 
@@ -152,7 +145,16 @@ export class RipsService {
     const text = await this.readFileAsText(file);
     const lines = text.split("\n").filter((line) => line.trim());
 
-    return lines.map((line) => {
+    return lines.map((line, index) => {
+      const valores = line.split(",");
+      if (valores.length !== 21) {
+        throw new Error(
+          `Error en los Procedimientos ${
+            index + 1
+          }: cantidad incorrecta de columnas`
+        );
+      }
+
       const [
         numDocIdPaciente,
         codPrestador,
