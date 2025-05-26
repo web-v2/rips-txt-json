@@ -11,6 +11,7 @@ import { RipsService } from '../services/rips.service';
 import { RIPS, Usuario, Consulta, Procedimiento } from '../types/rips.interfaces';
 import { useToast } from '@/hooks/use-toast';
 
+
 const RipsGenerator = () => {
   const [usuarioFile, setUsuarioFile] = useState<File | null>(null);
   const [consultasFile, setConsultasFile] = useState<File | null>(null);
@@ -81,7 +82,6 @@ const RipsGenerator = () => {
       
       setProgress(40);
       const consultas: Consulta[] = await ripsService.parseConsultas(consultasFile!);
-      //console.log({consultas});
       
       setProgress(60);
       const procedimientos: Procedimiento[] = await ripsService.parseProcedimientos(procedimientosFile!);
@@ -123,7 +123,7 @@ const RipsGenerator = () => {
 
   const downloadRips = () => {
     if (ripsData) {
-      const filename = `rips_${numFactura}_${new Date().toISOString().split('T')[0]}.json`;
+      const filename = `${numFactura}_${new Date().toISOString().split('T')[0]}.json`;
       ripsService.downloadJson(ripsData, filename);
       
       toast({
@@ -136,9 +136,9 @@ const RipsGenerator = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-4">
       <div className="max-w-4xl mx-auto space-y-6">
-        <div className="text-center py-8">
+        <div className="text-center py-8">  
           <h1 className="text-4xl font-bold text-gray-900 mb-2">Generador de Archivos RIPS</h1>
-          <p className="text-lg text-gray-600">Procesa archivos de usuarios, consultas y procedimientos para generar el JSON RIPS</p>
+          <p className="text-lg text-gray-600">Procesa archivos de usuarios, consultas y procedimientos para generar el RIPS en JSON </p>
         </div>
 
         <Card className="shadow-lg">
@@ -159,7 +159,7 @@ const RipsGenerator = () => {
                   id="numDocumentoIdObligado"
                   value={numDocumentoIdObligado}
                   onChange={(e) => setNumDocumentoIdObligado(e.target.value)}
-                  placeholder="Ej: 12345678901"
+                  placeholder="Ej: 900656493"
                 />
               </div>
               <div className="space-y-2">
@@ -168,7 +168,7 @@ const RipsGenerator = () => {
                   id="numFactura"
                   value={numFactura}
                   onChange={(e) => setNumFactura(e.target.value)}
-                  placeholder="Ej: FAC-001"
+                  placeholder="Ej: FEPV85000"
                 />
               </div>
             </div>
@@ -258,15 +258,15 @@ const RipsGenerator = () => {
             <CardContent>
               <div className="grid grid-cols-3 gap-4 text-center">
                 <div className="p-4 bg-blue-50 rounded-lg">
-                  <p className="text-2xl font-bold text-blue-600">{estadisticas.usuarios}</p>
+                  <p className="text-2xl font-bold text-blue-600">{estadisticas.usuarios.toLocaleString("es-ES")}</p>
                   <p className="text-sm text-gray-600">Usuarios</p>
                 </div>
                 <div className="p-4 bg-green-50 rounded-lg">
-                  <p className="text-2xl font-bold text-green-600">{estadisticas.consultas}</p>
+                  <p className="text-2xl font-bold text-green-600">{estadisticas.consultas.toLocaleString("es-ES")}</p>
                   <p className="text-sm text-gray-600">Consultas</p>
                 </div>
                 <div className="p-4 bg-purple-50 rounded-lg">
-                  <p className="text-2xl font-bold text-purple-600">{estadisticas.procedimientos}</p>
+                  <p className="text-2xl font-bold text-purple-600">{estadisticas.procedimientos.toLocaleString("es-ES")}</p>
                   <p className="text-sm text-gray-600">Procedimientos</p>
                 </div>
               </div>
@@ -303,6 +303,21 @@ const RipsGenerator = () => {
             </AlertDescription>
           </Alert>
         )}
+
+        <Card className="shadow-none border-t mt-8">
+          <CardContent>
+            <div className="flex flex-col md:flex-row justify-between items-center text-center gap-4 py-4">
+              <p className="text-sm text-gray-500">
+                © {new Date().getFullYear()} Samir Vergara. Todos los derechos reservados.
+              </p>
+              <div className="flex space-x-6 text-sm text-gray-500">
+                <span>Versión 1.0</span>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
+
       </div>
     </div>
   );
