@@ -1,4 +1,6 @@
-# Welcome to your Lovable project
+# Convetidor RIPS Capitas a JSON
+
+<a href="https://es.react.dev/" target="_blank" rel="noreferrer"><img src="https://upload.wikimedia.org/wikipedia/commons/a/a7/React-icon.svg" width="300" height="300" alt="PDF" /></a>
 
 ## Project info
 
@@ -24,10 +26,10 @@ Follow these steps:
 
 ```sh
 # Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+git clone <https://github.com/web-v2/rips-txt-json>
 
 # Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+cd <rips-txt-json>
 
 # Step 3: Install the necessary dependencies.
 npm i
@@ -36,23 +38,9 @@ npm i
 npm run dev
 ```
 
-**Edit a file directly in GitHub**
+## Construido con 🛠️
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
-
-**Use GitHub Codespaces**
-
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
-
-## What technologies are used for this project?
-
-This project is built with:
+_JS, Visual Studio Code, CLI_
 
 - Vite
 - TypeScript
@@ -60,14 +48,16 @@ This project is built with:
 - shadcn-ui
 - Tailwind CSS
 
-## How can I deploy this project?
+## Autores ✒️
 
-Simply open [Lovable](https://lovable.dev/projects/de23cb23-557b-40ca-bc4c-3144422b0781) and click on Share -> Publish.
+- **Samir Vergara**
 
-## Can I connect a custom domain to my Lovable project?
+## Contribuyendo 🖇️
 
-Yes, you can!
+## Wiki 📖
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
+Puedes encontrar mucho más de cómo utilizar este proyecto en nuestra [Wiki](https://github.com/web-v2/)
 
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)
+## Licencia 📄
+
+Este proyecto está bajo la Licencia (MIT License) - mira el archivo [LICENSE](LICENSE)

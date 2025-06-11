@@ -137,8 +137,8 @@ const RipsGenerator = () => {
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-4">
       <div className="max-w-4xl mx-auto space-y-6">
         <div className="text-center py-8">  
-          <h1 className="text-4xl font-bold text-gray-900 mb-2">Generador de Archivos RIPS</h1>
-          <p className="text-lg text-gray-600">Procesa archivos de usuarios, consultas y procedimientos para generar el RIPS en JSON </p>
+          <h1 className="text-4xl font-bold text-gray-900 mb-2">Generador de RIPS JSON</h1>
+          <p className="text-lg text-gray-600">Procesa archivos de usuarios, consultas y procedimientos en formato TXT para generar el RIPS en JSON.</p>
         </div>
 
         <Card className="shadow-lg">
@@ -308,7 +308,7 @@ const RipsGenerator = () => {
           <CardContent>
             <div className="flex flex-col md:flex-row justify-between items-center text-center gap-4 py-4">
               <p className="text-sm text-gray-500">
-                © {new Date().getFullYear()} Samir Vergara. Todos los derechos reservados.
+                © {new Date().getFullYear()} Samir Vergara +57 300 412 2688. Todos los derechos reservados.
               </p>
               <div className="flex space-x-6 text-sm text-gray-500">
                 <span>Versión 1.0</span>
