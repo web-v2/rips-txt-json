@@ -2,7 +2,7 @@
 
 ## Project info
 
-**URL**: https://lovable.dev/projects/de23cb23-557b-40ca-bc4c-3144422b0781
+**URL**: https://rips-capita-txt-json.netlify.app/
 
 # 🗂 Generador de RIPS de formatos .txt a .json
 
@@ -33,6 +33,7 @@ La aplicación:
    ```bash
    npm run dev
    ```
+
 ---
 
 ## 📜 Licencia
