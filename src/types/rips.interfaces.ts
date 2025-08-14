@@ -33,6 +33,10 @@ export interface Usuario {
 export interface Servicios {
   consultas?: Consulta[];
   procedimientos?: Procedimiento[];
+  urgencias?: Urgencia[];
+  hospitalizacion?: Hospitalizacion[];
+  medicamentos?: Medicamento[];
+  otrosServicios?: OtrosServicio[];
 }
 
 export interface Consulta {
@@ -82,4 +86,88 @@ export interface Procedimiento {
   valorPagoModerador: number;
   numFEVPagoModerador: null | string;
   consecutivo: number;
+}
+
+export interface Medicamento {
+  numDocIdPaciente?: string;
+  codPrestador: string;
+  numAutorizacion: null | string;
+  idMIPRES: null | string;
+  fechaDispensAdmon: string;
+  codDiagnosticoPrincipal: string;
+  codDiagnosticoRelacionado: null | string;
+  tipoMedicamento: null | string;
+  codTecnologiaSalud: null | string;
+  nomTecnologiaSalud: null | string;
+  concentracionMedicamento: number;
+  unidadMedida: number;
+  formaFarmaceutica: null | string;
+  unidadMinDispensa: number;
+  cantidadMedicamento: number;
+  diasTratamiento: number;
+  tipoDocumentoIdentificacion: TipoDocumentoIdentificacion;
+  numDocumentoIdentificacion: string;
+  vrUnitMedicamento: number;
+  vrServicio: number;
+  conceptoRecaudo: string;
+  valorPagoModerador: number;
+  numFEVPagoModerador: null | string;
+  consecutivo: number;
+}
+
+export interface OtrosServicio {
+  numDocIdPaciente?: string;
+  codPrestador: string;
+  numAutorizacion: null | string;
+  idMIPRES: null | string;
+  fechaSuministroTecnologia: string;
+  tipoOS: string;
+  codTecnologiaSalud: null | string;
+  nomTecnologiaSalud: null | string;
+  cantidadOS: number;
+  tipoDocumentoIdentificacion: TipoDocumentoIdentificacion;
+  numDocumentoIdentificacion: string;
+  vrUnitOS: number;
+  vrServicio: number;
+  conceptoRecaudo: string;
+  valorPagoModerador: number;
+  numFEVPagoModerador: null | string;
+  consecutivo: number;
+}
+
+export interface Hospitalizacion {
+  numDocIdPaciente?: string;
+  codPrestador: string;
+  viaIngresoServicioSalud: string;
+  fechaInicioAtencion: string;
+  numAutorizacion: null | string;
+  causaMotivoAtencion: null | string;
+  codDiagnosticoPrincipal: string;
+  codDiagnosticoPrincipalE: string;
+  codDiagnosticoRelacionadoE1: null | string;
+  codDiagnosticoRelacionadoE2: null | string;
+  codDiagnosticoRelacionadoE3: null | string;
+  codComplicacion: null | string;
+  condicionDestinoUsuarioEgreso: null | string;
+  codDiagnosticoCausaMuerte: null | string;
+  fechaEgreso: string;
+  consecutivo: number;
+  [key: string]: any; // Para permitir acceso dinámico a propiedades
+}
+
+export interface Urgencia {
+  numDocIdPaciente?: string;
+  codPrestador: string;
+  fechaInicioAtencion: string;
+  causaMotivoAtencion: null | string;
+  codDiagnosticoPrincipal: string;
+  codDiagnosticoPrincipalE: string;
+  codDiagnosticoRelacionadoE1: null | string;
+  codDiagnosticoRelacionadoE2: null | string;
+  codDiagnosticoRelacionadoE3: null | string;
+  condicionDestinoUsuarioEgreso: null | string;
+  codDiagnosticoCausaMuerte: null | string;
+  fechaEgreso: string;
+  consecutivo: number;
+  [key: string]: any; // Para permitir acceso dinámico a propiedades
 }

@@ -1,8 +1,8 @@
 
-import RipsGenerator from '@/components/RipsGenerator';
+import Dashboard from '@/pages/Dashboard';
 
 const Index = () => {
-  return <RipsGenerator />;
+  return <Dashboard />;
 };
 
 export default Index;

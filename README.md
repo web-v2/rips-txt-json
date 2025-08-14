@@ -1,14 +1,18 @@
-# Convetidor RIPS Capitas a JSON
-
-<a href="https://es.react.dev/" target="_blank" rel="noreferrer"><img src="https://upload.wikimedia.org/wikipedia/commons/a/a7/React-icon.svg" width="300" height="300" alt="PDF" /></a>
+# Welcome to your Lovable project
 
 ## Project info
 
-**URL**: https://rips-capita-txt-json.netlify.app/
+**URL**: https://lovable.dev/projects/de23cb23-557b-40ca-bc4c-3144422b0781
 
 ## How can I edit this code?
 
 There are several ways of editing your application.
+
+**Use Lovable**
+
+Simply visit the [Lovable Project](https://lovable.dev/projects/de23cb23-557b-40ca-bc4c-3144422b0781) and start prompting.
+
+Changes made via Lovable will be committed automatically to this repo.
 
 **Use your preferred IDE**
 
@@ -20,10 +24,10 @@ Follow these steps:
 
 ```sh
 # Step 1: Clone the repository using the project's Git URL.
-git clone <https://github.com/web-v2/rips-txt-json>
+git clone <YOUR_GIT_URL>
 
 # Step 2: Navigate to the project directory.
-cd <rips-txt-json>
+cd <YOUR_PROJECT_NAME>
 
 # Step 3: Install the necessary dependencies.
 npm i
@@ -32,9 +36,23 @@ npm i
 npm run dev
 ```
 
-## Construido con 🛠️
+**Edit a file directly in GitHub**
 
-_JS, Visual Studio Code, CLI_
+- Navigate to the desired file(s).
+- Click the "Edit" button (pencil icon) at the top right of the file view.
+- Make your changes and commit the changes.
+
+**Use GitHub Codespaces**
+
+- Navigate to the main page of your repository.
+- Click on the "Code" button (green button) near the top right.
+- Select the "Codespaces" tab.
+- Click on "New codespace" to launch a new Codespace environment.
+- Edit files directly within the Codespace and commit and push your changes once you're done.
+
+## What technologies are used for this project?
+
+This project is built with:
 
 - Vite
 - TypeScript
@@ -42,16 +60,14 @@ _JS, Visual Studio Code, CLI_
 - shadcn-ui
 - Tailwind CSS
 
-## Autores ✒️
+## How can I deploy this project?
 
-- **Samir Vergara**
+Simply open [Lovable](https://lovable.dev/projects/de23cb23-557b-40ca-bc4c-3144422b0781) and click on Share -> Publish.
 
-## Contribuyendo 🖇️
+## Can I connect a custom domain to my Lovable project?
 
-## Wiki 📖
+Yes, you can!
 
-Puedes encontrar mucho más de cómo utilizar este proyecto en nuestra [Wiki](https://github.com/web-v2/)
+To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
 
-## Licencia 📄
-
-Este proyecto está bajo la Licencia (MIT License) - mira el archivo [LICENSE](LICENSE)
+Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)

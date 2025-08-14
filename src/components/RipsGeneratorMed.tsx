@@ -8,16 +8,17 @@ import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Progress } from '@/components/ui/progress';
 import { Download, Upload, FileText, Users, Activity } from 'lucide-react';
 import { RipsService } from '../services/rips.service';
-import { RIPS, Usuario, Consulta, Procedimiento } from '../types/rips.interfaces';
+import { RIPS, Usuario, Medicamento, OtrosServicio } from '../types/rips.interfaces';
 import { useToast } from '@/hooks/use-toast';
 import BackToDashboardButton from './Volver';
 import Footer from './Footer';
 
 
-const RipsGenerator = () => {
+const RipsGeneratorMed = () => {
   const [usuarioFile, setUsuarioFile] = useState<File | null>(null);
-  const [consultasFile, setConsultasFile] = useState<File | null>(null);
-  const [procedimientosFile, setProcedimientosFile] = useState<File | null>(null);
+  const [medicamentosFile, setMedicamentosFile] = useState<File | null>(null);
+  const [otrosServiciosFile, setOtrosServiciosFile] = useState<File | null>(null);
+
   const [numDocumentoIdObligado, setNumDocumentoIdObligado] = useState('');
   const [numFactura, setNumFactura] = useState('');
   const [isProcessing, setIsProcessing] = useState(false);
@@ -25,32 +26,32 @@ const RipsGenerator = () => {
   const [ripsData, setRipsData] = useState<RIPS | null>(null);
   const [estadisticas, setEstadisticas] = useState<{
     usuarios: number;
-    consultas: number;
-    procedimientos: number;
+    medicamentos: number;
+    otrosServicios: number;
   } | null>(null);
 
   const ripsService = new RipsService();
   const { toast } = useToast();
 
-  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>, tipo: 'usuario' | 'consultas' | 'procedimientos') => {
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>, tipo: 'usuario' | 'medicamentos' | 'otrosServicios') => {
     const file = event.target.files?.[0];
     if (file) {
       switch (tipo) {
         case 'usuario':
           setUsuarioFile(file);
+          break;       
+        case 'medicamentos':
+          setMedicamentosFile(file);
           break;
-        case 'consultas':
-          setConsultasFile(file);
-          break;
-        case 'procedimientos':
-          setProcedimientosFile(file);
+        case 'otrosServicios':
+          setOtrosServiciosFile(file);
           break;
       }
     }
   };
 
   const validateFiles = (): boolean => {
-    if (!usuarioFile || !consultasFile || !procedimientosFile) {
+    if (!usuarioFile || !medicamentosFile || !otrosServiciosFile) {
       toast({
         title: "Archivos faltantes",
         description: "Por favor selecciona todos los archivos requeridos.",
@@ -83,17 +84,17 @@ const RipsGenerator = () => {
       const usuarios: Usuario[] = await ripsService.parseUsuarios(usuarioFile!);
       
       setProgress(40);
-      const consultas: Consulta[] = await ripsService.parseConsultas(consultasFile!);
+      const medicamentos: Medicamento[] = await ripsService.parseMedicamentos(medicamentosFile!);
       
       setProgress(60);
-      const procedimientos: Procedimiento[] = await ripsService.parseProcedimientos(procedimientosFile!);
+      const otrosServ: OtrosServicio[] = await ripsService.parseOtrosServicios(otrosServiciosFile!);
 
       // Agregar datos
       setProgress(80);
-      const rips = ripsService.aggregateData(
+      const rips = ripsService.aggregateDataMed(
         usuarios, 
-        consultas, 
-        procedimientos, 
+        medicamentos, 
+        otrosServ, 
         numDocumentoIdObligado.trim(), 
         numFactura.trim()
       );
@@ -102,8 +103,8 @@ const RipsGenerator = () => {
       setRipsData(rips);
       setEstadisticas({
         usuarios: usuarios.length,
-        consultas: consultas.length,
-        procedimientos: procedimientos.length
+        medicamentos: medicamentos.length,
+        otrosServicios: otrosServ.length
       });
 
       toast({
@@ -139,14 +140,13 @@ const RipsGenerator = () => {
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-4">
       <div className="max-w-4xl mx-auto space-y-6">
         <div className="text-center py-8">  
-          <h1 className="text-4xl font-bold text-gray-900 mb-2">Generador de RIPS JSON - Módulo 1</h1>
-          <p className="text-lg text-gray-600">Procesa archivos de usuarios, consultas y procedimientos en formato TXT para generar el RIPS en JSON.</p>
+          <h1 className="text-4xl font-bold text-gray-900 mb-2">Generador de RIPS JSON - Módulo 2</h1>
+          <p className="text-lg text-gray-600">Procesa archivos de usuarios, medicamentos y otros servicios en formato TXT para generar el RIPS en JSON.</p>
         </div>
-        
+
         <div className="flex gap-4">
           <BackToDashboardButton />
         </div>
-
 
         <Card className="shadow-lg">
           <CardHeader>
@@ -189,7 +189,7 @@ const RipsGenerator = () => {
               Cargar Archivos
             </CardTitle>
             <CardDescription>
-              Selecciona los archivos .txt con los datos de usuarios, consultas y procedimientos
+              Selecciona los archivos .txt con los datos de usuarios, medicamentos y otros servicios
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
@@ -211,34 +211,34 @@ const RipsGenerator = () => {
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="consultasFile" className="flex items-center gap-2">
+                <Label htmlFor="medicamentosFile" className="flex items-center gap-2">
                   <Activity className="h-4 w-4" />
-                  Archivo de Consultas
+                  Archivo de Medicamentos
                 </Label>
                 <Input
-                  id="consultasFile"
+                  id="medicamentosFile"
                   type="file"
                   accept=".txt"
-                  onChange={(e) => handleFileChange(e, 'consultas')}
+                  onChange={(e) => handleFileChange(e, 'medicamentos')}
                 />
-                {consultasFile && (
-                  <p className="text-sm text-green-600">✓ {consultasFile.name}</p>
+                {medicamentosFile && (
+                  <p className="text-sm text-green-600">✓ {medicamentosFile.name}</p>
                 )}
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="procedimientosFile" className="flex items-center gap-2">
+                <Label htmlFor="otrosServFile" className="flex items-center gap-2">
                   <FileText className="h-4 w-4" />
-                  Archivo de Procedimientos
+                  Archivo de Otros Servicios
                 </Label>
                 <Input
-                  id="procedimientosFile"
+                  id="otrosServFile"
                   type="file"
                   accept=".txt"
-                  onChange={(e) => handleFileChange(e, 'procedimientos')}
+                  onChange={(e) => handleFileChange(e, 'otrosServicios')}
                 />
-                {procedimientosFile && (
-                  <p className="text-sm text-green-600">✓ {procedimientosFile.name}</p>
+                {otrosServiciosFile && (
+                  <p className="text-sm text-green-600">✓ {otrosServiciosFile.name}</p>
                 )}
               </div>
             </div>
@@ -269,12 +269,12 @@ const RipsGenerator = () => {
                   <p className="text-sm text-gray-600">Usuarios</p>
                 </div>
                 <div className="p-4 bg-green-50 rounded-lg">
-                  <p className="text-2xl font-bold text-green-600">{estadisticas.consultas.toLocaleString("es-ES")}</p>
-                  <p className="text-sm text-gray-600">Consultas</p>
+                  <p className="text-2xl font-bold text-green-600">{estadisticas.medicamentos.toLocaleString("es-ES")}</p>
+                  <p className="text-sm text-gray-600">Medicamentos</p>
                 </div>
                 <div className="p-4 bg-purple-50 rounded-lg">
-                  <p className="text-2xl font-bold text-purple-600">{estadisticas.procedimientos.toLocaleString("es-ES")}</p>
-                  <p className="text-sm text-gray-600">Procedimientos</p>
+                  <p className="text-2xl font-bold text-purple-600">{estadisticas.otrosServicios.toLocaleString("es-ES")}</p>
+                  <p className="text-sm text-gray-600">Otros Servicios</p>
                 </div>
               </div>
             </CardContent>
@@ -301,7 +301,7 @@ const RipsGenerator = () => {
             </Button>
           )}
         </div>
-        
+
         {ripsData && (
           <Alert>
             <FileText className="h-4 w-4" />
@@ -323,4 +323,4 @@ const RipsGenerator = () => {
   );
 };
 
-export default RipsGenerator;
+export default RipsGeneratorMed;

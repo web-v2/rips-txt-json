@@ -3,12 +3,18 @@ import {
   Usuario,
   Consulta,
   Procedimiento,
+  Urgencia,
+  Hospitalizacion,
+  Medicamento,
+  OtrosServicio,
 } from "../types/rips.interfaces";
 export class RipsService {
   private cambiarFormatoFecha(fecha: string): string {
-    let partes = fecha.split("/");
-    let nuevaFecha = `${partes[2]}-${partes[1]}-${partes[0]}`;
-    return nuevaFecha;
+    const partes = fecha.split("/");
+    const dia = partes[0].padStart(2, "0");
+    const mes = partes[1].padStart(2, "0");
+    const anio = partes[2];
+    return `${anio}-${mes}-${dia}`;
   }
 
   private cambiarFormatoFechaConHora(fechaConHora: string): string {
@@ -211,6 +217,267 @@ export class RipsService {
     });
   }
 
+  async parseUrgencias(file: File): Promise<Urgencia[]> {
+    const text = await this.readFileAsText(file);
+    const lines = text.split("\n").filter((line) => line.trim());
+
+    return lines.map((line, index) => {
+      const valores = line.split(",");
+      if (valores.length !== 13) {
+        throw new Error(
+          `Error en las Urgencias ${index + 1}: cantidad incorrecta de columnas`
+        );
+      }
+
+      const [
+        numDocIdPaciente,
+        codPrestador,
+        fechaInicioAtencionStr,
+        causaMotivoAtencion,
+        codDiagnosticoPrincipal,
+        codDiagnosticoPrincipalE,
+        codDiagnosticoRelacionadoE1,
+        codDiagnosticoRelacionadoE2,
+        codDiagnosticoRelacionadoE3,
+        condicionDestinoUsuarioEgreso,
+        codDiagnosticoCausaMuerte,
+        fechaEgresoStr,
+        consecutivoStr,
+      ] = line.split(",");
+
+      const consecutivo = parseInt(consecutivoStr) || 0;
+      const fechaInicioAtencion = this.cambiarFormatoFechaConHora(
+        fechaInicioAtencionStr
+      );
+      const fechaEgreso = this.cambiarFormatoFechaConHora(fechaEgresoStr);
+
+      return {
+        numDocIdPaciente: numDocIdPaciente,
+        codPrestador: codPrestador,
+        fechaInicioAtencion,
+        causaMotivoAtencion: causaMotivoAtencion,
+        codDiagnosticoPrincipal: codDiagnosticoPrincipal,
+        codDiagnosticoPrincipalE: codDiagnosticoPrincipalE,
+        codDiagnosticoRelacionadoE1: codDiagnosticoRelacionadoE1 || null,
+        codDiagnosticoRelacionadoE2: codDiagnosticoRelacionadoE2 || null,
+        codDiagnosticoRelacionadoE3: codDiagnosticoRelacionadoE3 || null,
+        condicionDestinoUsuarioEgreso: condicionDestinoUsuarioEgreso || null,
+        codDiagnosticoCausaMuerte: codDiagnosticoCausaMuerte || null,
+        fechaEgreso,
+        consecutivo,
+      } as Urgencia;
+    });
+  }
+
+  async parseHospitalizacion(file: File): Promise<Hospitalizacion[]> {
+    const text = await this.readFileAsText(file);
+    const lines = text.split("\n").filter((line) => line.trim());
+
+    return lines.map((line, index) => {
+      const valores = line.split(",");
+      if (valores.length !== 16) {
+        throw new Error(
+          `Error en las Hospitalizaciones ${
+            index + 1
+          }: cantidad incorrecta de columnas`
+        );
+      }
+
+      const [
+        numDocIdPaciente,
+        codPrestador,
+        viaIngresoServicioSalud,
+        fechaInicioAtencionStr,
+        numAutorizacion,
+        causaMotivoAtencion,
+        codDiagnosticoPrincipal,
+        codDiagnosticoPrincipalE,
+        codDiagnosticoRelacionadoE1,
+        codDiagnosticoRelacionadoE2,
+        codDiagnosticoRelacionadoE3,
+        codComplicacion,
+        condicionDestinoUsuarioEgreso,
+        codDiagnosticoCausaMuerte,
+        fechaEgresoStr,
+        consecutivoStr,
+      ] = line.split(",");
+
+      const consecutivo = parseInt(consecutivoStr) || 0;
+      const fechaInicioAtencion = this.cambiarFormatoFechaConHora(
+        fechaInicioAtencionStr
+      );
+      const fechaEgreso = this.cambiarFormatoFechaConHora(fechaEgresoStr);
+
+      return {
+        numDocIdPaciente: numDocIdPaciente,
+        codPrestador: codPrestador,
+        viaIngresoServicioSalud: viaIngresoServicioSalud,
+        fechaInicioAtencion,
+        numAutorizacion: numAutorizacion || null,
+        causaMotivoAtencion: causaMotivoAtencion,
+        codDiagnosticoPrincipal: codDiagnosticoPrincipal,
+        codDiagnosticoPrincipalE: codDiagnosticoPrincipalE,
+        codDiagnosticoRelacionadoE1: codDiagnosticoRelacionadoE1 || null,
+        codDiagnosticoRelacionadoE2: codDiagnosticoRelacionadoE2 || null,
+        codDiagnosticoRelacionadoE3: codDiagnosticoRelacionadoE3 || null,
+        codComplicacion: codComplicacion || null,
+        condicionDestinoUsuarioEgreso: condicionDestinoUsuarioEgreso || null,
+        codDiagnosticoCausaMuerte: codDiagnosticoCausaMuerte || null,
+        fechaEgreso,
+        consecutivo,
+      } as Hospitalizacion;
+    });
+  }
+
+  async parseMedicamentos(file: File): Promise<Medicamento[]> {
+    const text = await this.readFileAsText(file);
+    const lines = text.split("\n").filter((line) => line.trim());
+
+    return lines.map((line, index) => {
+      const valores = line.split(",");
+      if (valores.length !== 24) {
+        throw new Error(
+          `Error de los Medicamentos ${
+            index + 1
+          }: cantidad incorrecta de columnas`
+        );
+      }
+
+      const [
+        numDocIdPaciente,
+        codPrestador,
+        numAutorizacion,
+        idMIPRES,
+        fechaDispensAdmonStr,
+        codDiagnosticoPrincipal,
+        codDiagnosticoRelacionado,
+        tipoMedicamento,
+        codTecnologiaSalud,
+        nomTecnologiaSalud,
+        concentracionMedicamentoStr,
+        unidadMedidaStr,
+        formaFarmaceutica,
+        unidadMinDispensaStr,
+        cantidadMedicamentoStr,
+        diasTratamientoStr,
+        tipoDocumentoIdentificacion,
+        numDocumentoIdentificacion,
+        vrUnitMedicamentoStr,
+        vrServicioStr,
+        conceptoRecaudo,
+        valorPagoModeradorStr,
+        numFEVPagoModerador,
+        consecutivoStr,
+      ] = line.split(",");
+
+      const fechaDispensAdmon =
+        this.cambiarFormatoFechaConHora(fechaDispensAdmonStr);
+      const concentracionMedicamento =
+        parseFloat(concentracionMedicamentoStr) || 0;
+      const unidadMedida = parseInt(unidadMedidaStr) || 0;
+      const unidadMinDispensa = parseInt(unidadMinDispensaStr) || 0;
+      const cantidadMedicamento = parseFloat(cantidadMedicamentoStr) || 0;
+      const diasTratamiento = parseInt(diasTratamientoStr) || 0;
+      const vrUnitMedicamento = parseFloat(vrUnitMedicamentoStr) || 0;
+      const vrServicio = parseFloat(vrServicioStr) || 0;
+      const valorPagoModerador = parseFloat(valorPagoModeradorStr) || 0;
+      const consecutivo = parseInt(consecutivoStr) || 0;
+
+      return {
+        numDocIdPaciente,
+        codPrestador,
+        numAutorizacion: numAutorizacion || null,
+        idMIPRES: idMIPRES || null,
+        fechaDispensAdmon,
+        codDiagnosticoPrincipal,
+        codDiagnosticoRelacionado: codDiagnosticoRelacionado || null,
+        tipoMedicamento: tipoMedicamento || null,
+        codTecnologiaSalud: codTecnologiaSalud || null,
+        nomTecnologiaSalud: nomTecnologiaSalud || null,
+        concentracionMedicamento,
+        unidadMedida,
+        formaFarmaceutica: formaFarmaceutica || null,
+        unidadMinDispensa,
+        cantidadMedicamento,
+        diasTratamiento,
+        tipoDocumentoIdentificacion,
+        numDocumentoIdentificacion: numDocumentoIdentificacion,
+        vrUnitMedicamento,
+        vrServicio,
+        conceptoRecaudo,
+        valorPagoModerador,
+        numFEVPagoModerador: numFEVPagoModerador || null,
+        consecutivo,
+      } as Medicamento;
+    });
+  }
+
+  async parseOtrosServicios(file: File): Promise<OtrosServicio[]> {
+    const text = await this.readFileAsText(file);
+    const lines = text.split("\n").filter((line) => line.trim());
+
+    return lines.map((line, index) => {
+      const valores = line.split(",");
+
+      if (valores.length !== 17) {
+        throw new Error(
+          `Error en OtrosServicios línea ${
+            index + 1
+          }: cantidad incorrecta de columnas`
+        );
+      }
+
+      const [
+        numDocIdPaciente,
+        codPrestador,
+        numAutorizacion,
+        idMIPRES,
+        fechaSuministroTecnologiaStr,
+        tipoOS,
+        codTecnologiaSalud,
+        nomTecnologiaSalud,
+        cantidadOSStr,
+        tipoDocumentoIdentificacion,
+        numDocumentoIdentificacion,
+        vrUnitOSStr,
+        vrServicioStr,
+        conceptoRecaudo,
+        valorPagoModeradorStr,
+        numFEVPagoModerador,
+        consecutivoStr,
+      ] = valores;
+
+      const fechaSuministroTecnologia = this.cambiarFormatoFechaConHora(
+        fechaSuministroTecnologiaStr
+      );
+      const cantidadOS = parseFloat(cantidadOSStr) || 0;
+      const vrUnitOS = parseFloat(vrUnitOSStr) || 0;
+      const vrServicio = parseFloat(vrServicioStr) || 0;
+      const valorPagoModerador = parseFloat(valorPagoModeradorStr) || 0;
+      const consecutivo = parseInt(consecutivoStr) || 0;
+
+      return {
+        numDocIdPaciente,
+        codPrestador,
+        numAutorizacion: numAutorizacion || null,
+        idMIPRES: idMIPRES || null,
+        fechaSuministroTecnologia,
+        tipoOS,
+        codTecnologiaSalud: codTecnologiaSalud || null,
+        nomTecnologiaSalud: nomTecnologiaSalud || null,
+        cantidadOS,
+        tipoDocumentoIdentificacion,
+        numDocumentoIdentificacion: numDocumentoIdentificacion,
+        vrUnitOS,
+        vrServicio,
+        conceptoRecaudo,
+        valorPagoModerador,
+        numFEVPagoModerador: numFEVPagoModerador || null,
+        consecutivo,
+      } as OtrosServicio;
+    });
+  }
+
   aggregateData(
     usuarios: Usuario[],
     consultas: Consulta[],
@@ -253,6 +520,135 @@ export class RipsService {
       usuario.servicios = {
         consultas: ce.length > 0 ? ce : undefined,
         procedimientos: proc.length > 0 ? proc : undefined,
+      };
+    });
+
+    rips.usuarios = usuariosCopia;
+    return rips;
+  }
+
+  aggregateDataMed(
+    usuarios: Usuario[],
+    medicamentos: Medicamento[],
+    otrosServicios: OtrosServicio[],
+    numDocumentoIdObligado: string,
+    numFactura: string
+  ): RIPS {
+    // Crear una estructura de RIPS
+    const rips: RIPS = {
+      numDocumentoIdObligado,
+      numFactura,
+      tipoNota: null,
+      numNota: null,
+      usuarios: [],
+    };
+
+    // Hacer una copia de los usuarios para no modificar el original
+    const usuariosCopia = [...usuarios];
+
+    // Asignar consultas a usuarios
+    usuariosCopia.forEach((usuario) => {
+      const medicamentosUsuario = medicamentos.filter(
+        (med) => med.numDocIdPaciente === usuario.numDocumentoIdentificacion
+      );
+
+      const otrosServUsuario = otrosServicios.filter(
+        (otros) => otros.numDocIdPaciente === usuario.numDocumentoIdentificacion
+      );
+
+      const me = medicamentosUsuario.map(
+        ({ numDocIdPaciente, ...resto }) => resto
+      );
+
+      const otr = otrosServUsuario.map(
+        ({ numDocIdPaciente, ...resto }) => resto
+      );
+
+      usuario.servicios = {
+        medicamentos: me.length > 0 ? me : undefined,
+        otrosServicios: otr.length > 0 ? otr : undefined,
+      };
+    });
+
+    rips.usuarios = usuariosCopia;
+    return rips;
+  }
+
+  aggregateDataAll(
+    usuarios: Usuario[],
+    consultas: Consulta[],
+    procedimientos: Procedimiento[],
+    urgencias: Urgencia[],
+    hospitalizacion: Hospitalizacion[],
+    medicamentos: Medicamento[],
+    otrosServicios: OtrosServicio[],
+    numDocumentoIdObligado: string,
+    numFactura: string
+  ): RIPS {
+    // Crear una estructura de RIPS
+    const rips: RIPS = {
+      numDocumentoIdObligado,
+      numFactura,
+      tipoNota: null,
+      numNota: null,
+      usuarios: [],
+    };
+
+    // Hacer una copia de los usuarios para no modificar el original
+    const usuariosCopia = [...usuarios];
+
+    // Asignar consultas a usuarios
+    usuariosCopia.forEach((usuario) => {
+      //Filtros
+      const consultasUsuario = consultas.filter(
+        (consulta) =>
+          consulta.numDocIdPaciente === usuario.numDocumentoIdentificacion
+      );
+      const procedimientosUsuario = procedimientos.filter(
+        (procedimiento) =>
+          procedimiento.numDocIdPaciente === usuario.numDocumentoIdentificacion
+      );
+      const urgenciaUsuario = urgencias.filter(
+        (urgencia) =>
+          urgencia.numDocIdPaciente === usuario.numDocumentoIdentificacion
+      );
+      const hospitalizacionUsuario = hospitalizacion.filter(
+        (hosp) => hosp.numDocIdPaciente === usuario.numDocumentoIdentificacion
+      );
+      const medicamentosUsuario = medicamentos.filter(
+        (med) => med.numDocIdPaciente === usuario.numDocumentoIdentificacion
+      );
+      const otrosServUsuario = otrosServicios.filter(
+        (otros) => otros.numDocIdPaciente === usuario.numDocumentoIdentificacion
+      );
+
+      //Mapeo de datos
+      const ce = consultasUsuario.map(
+        ({ numDocIdPaciente, ...resto }) => resto
+      );
+      const proc = procedimientosUsuario.map(
+        ({ numDocIdPaciente, ...resto }) => resto
+      );
+      const urg = urgenciaUsuario.map(
+        ({ numDocIdPaciente, ...resto }) => resto
+      );
+      const hosp = hospitalizacionUsuario.map(
+        ({ numDocIdPaciente, ...resto }) => resto
+      );
+      const me = medicamentosUsuario.map(
+        ({ numDocIdPaciente, ...resto }) => resto
+      );
+      const otr = otrosServUsuario.map(
+        ({ numDocIdPaciente, ...resto }) => resto
+      );
+
+      usuario.servicios = {
+        consultas: ce.length > 0 ? ce : undefined,
+        procedimientos: proc.length > 0 ? proc : undefined,
+        urgencias: urg.length > 0 ? urg : undefined,
+        hospitalizacion: hosp.length > 0 ? hosp : undefined,
+        medicamentos: me.length > 0 ? me : undefined,
+        otrosServicios: otr.length > 0 ? otr : undefined,
       };
     });
 
