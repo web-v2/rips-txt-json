@@ -2,7 +2,7 @@
 
 ## Información del Proyecto
 
-**URL:** https://rips-capita-txt-json.netlify.app/
+**URL:** https://rips-assembler.netlify.app/
 
 ---
 
