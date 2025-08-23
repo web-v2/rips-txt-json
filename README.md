@@ -1,36 +1,91 @@
-# Bienvenidos App RIPS CAPITAS/PGP a JSON
+# App RIPS Assembler JSON
 
-## Project info
+## Información del Proyecto
 
-**URL**: https://rips-capita-txt-json.netlify.app/
+**URL:** https://rips-capita-txt-json.netlify.app/
 
-# 🗂 Generador de RIPS de formatos .txt a .json
+---
 
-Este proyecto es una aplicación en **React** que permite crear el RIPS JSON de un lote de archivos con extensiones .txt a .json con parseo + validación de datos.
+## 📦 Módulos Principales
 
-## 📌 Descripción
+### 1. Generador de RIPS de formatos .txt a .json
 
-La aplicación:
+Esta aplicación en **React** permite convertir archivos RIPS en formato `.txt` a `.json`, realizar validaciones, consultar tablas de referencia y descargar los resultados en diferentes formatos.
 
-1. **Llenar** el formulario con el NIT + Prefijo y Número de la factura.
-2. **Subir** los archivos que va a convertir.
-3. **Click** al boton generar RIPS.
-4. **Descargar** archivo convertido a JSON.
+**Funcionalidades:**
+
+- Carga de archivos `.txt` de RIPS.
+- Validación automática de estructura y datos.
+- Conversión a formato JSON.
+- Descarga del archivo consolidado.
+
+### 2. Generador de RIPS de formato .json a .csv
+
+Convierte archivos RIPS en formato `.json` a archivos en `.csv` compatibles con excel. Validar su estructura y descargar el resultado de la conversión.
+
+**Funcionalidades:**
+
+- Carga archivo `.json` de RIPS.
+- Validación automática de estructura y datos.
+- Conversión a formatos `.csv`.
+- Descarga de archivos transaccional (cabecera).
+- Descarga de archivos de usuarios.
+- Descarga de archivos de servicios (consultas, procedimientos, medicamentos, hospitalización, urgencias, otros servicios).
+
+### 3. Agrupador de Archivos JSON
+
+Permite cargar lotes de archivos `.json` compatibles con las estructuras de un RIPS, valida y une toda la data de los JSON, al final puede descargar un JSON o un CSV.
+
+**Funcionalidades:**
+
+- Descarga de archivos transaccional (cabecera).
+- Descarga de archivos de usuarios.
+- Descarga de archivos de servicios (consultas, procedimientos, medicamentos, hospitalización, urgencias, otros servicios).
+
+### 4. Tablas de Referencia SISPRO
+
+Consulta y filtra tablas de referencia oficiales (SISPRO) para códigos y descripciones de servicios, medicamentos, procedimientos, etc.
+
+**Funcionalidades:**
+
+- Visualización de tablas de referencia.
+- Filtro por tipo de tabla, código o nombre.
+- Búsqueda rápida y navegación sencilla.
+
+### 5. Página de Ayuda y 404 Personalizada
+
+Incluye una sección de ayuda con información útil sobre el uso de la herramienta y una página 404 personalizada para rutas no encontradas.
+
+**Funcionalidades:**
+
+- Guía paso a paso para el uso de la aplicación.
+- Página de error amigable y con acceso rápido al inicio.
+
+---
+
+## 🚀 ¿Cómo usar la aplicación?
+
+1. **Llenar** el formulario con el NIT, prefijo y número de factura.
+2. **Subir** los archivos `.txt` que desea convertir.
+3. **Hacer clic** en "Generar RIPS".
+4. **Descargar** el archivo convertido a JSON o los archivos CSV según necesidad.
+5. **Consultar** las tablas de referencia para validar códigos y descripciones.
 
 ---
 
 ## 📥 Instalación en Local
 
-1. **Clonar el repositorio** o copiar el código a un directorio local:
+1. **Clonar el repositorio**:
 
    ```bash
    git clone https://github.com/web-v2/rips-txt-json.git
    cd rips-txt-json
    ```
 
-2. **Ejecutar**:
+2. **Instalar dependencias y ejecutar**:
 
    ```bash
+   npm install
    npm run dev
    ```
 
@@ -38,10 +93,11 @@ La aplicación:
 
 ## 📜 Licencia
 
-Este proyecto se distribuye bajo la licencia MIT. Puedes usarlo pero NO modificarlo cualquier alteración debe ser solicitada al area desarrolladora de la herramienta.
+Este proyecto se distribuye bajo la licencia MIT. Puedes usarlo pero NO modificarlo; cualquier alteración debe ser solicitada al área desarrolladora de la herramienta.
 
-## 👤 Autor ✒️
+---
 
-- **Samir Vergara**
+## 👤 Autor
+
+- **Samir Vergara**  
   Desarrollador de software
-  GitHub [https://github.com/web-v2]

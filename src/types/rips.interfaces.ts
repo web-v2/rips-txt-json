@@ -171,3 +171,18 @@ export interface Urgencia {
   consecutivo: number;
   [key: string]: any; // Para permitir acceso dinámico a propiedades
 }
+
+export interface ProcessedData {
+  totalFiles: number;
+  totalFacturas: number;
+  totalUsuarios: number;
+  totalServicios: number;
+  consolidatedData: RIPS[];
+}
+
+export interface FileProcessingResult {
+  fileName: string;
+  status: "success" | "error";
+  message: string;
+  data?: RIPS;
+}

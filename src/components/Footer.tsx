@@ -5,7 +5,7 @@ function Footer() {
           © {new Date().getFullYear()} Samir Vergara. Todos los derechos reservados. Para mayor Información: <span className='text-red-500'>+57 300 412 2688</span>
         </p>
         <div className="flex space-x-6 text-sm text-gray-500">
-          <span>Versión 2.0</span>
+          <span>Versión 4.5</span>
         </div>
       </div>
   );

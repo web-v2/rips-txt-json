@@ -6,7 +6,7 @@
   import { Label } from '@/components/ui/label';
   import { Alert, AlertDescription } from '@/components/ui/alert';
   import { Progress } from '@/components/ui/progress';
-  import { Download, Upload, FileText, Users, Hospital, Stethoscope, Syringe, Microscope, Ambulance, BriefcaseMedical } from 'lucide-react';
+  import { Download, Upload, FileText, Users, Hospital, Stethoscope, Syringe, Microscope, Ambulance, BriefcaseMedical, Package } from 'lucide-react';
   import { RipsService } from '../services/rips.service';
   import { RIPS, Usuario, Medicamento, OtrosServicio, Consulta, Procedimiento, Urgencia, Hospitalizacion } from '../types/rips.interfaces';
   import { useToast } from '@/hooks/use-toast';
@@ -189,10 +189,21 @@
 
     return (
       <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-4">
-        <div className="max-w-4xl mx-auto space-y-6">
-          <div className="text-center py-8">  
-            <h1 className="text-4xl font-bold text-gray-900 mb-2">Generador de RIPS JSON Completos</h1>
-            <p className="text-lg text-gray-600">Procesa archivos de usuarios, consultas, procedimientos, medicamentos y otros servicios en formato TXT para generar el RIPS en JSON.</p>
+        <div className="max-w-4xl mx-auto space-y-6">          
+
+            {/* Header */}
+          <div className="text-center mb-8">
+            <div className="flex items-center justify-center mb-4">
+              <div className="bg-gradient-to-r from-primary to-secondary p-3 rounded-xl shadow-lg">
+                <Stethoscope className="h-8 w-8 text-white" />
+              </div>
+            </div>
+            <h1 className="text-4xl font-bold mb-2 bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+              Generador de RIPS TXT a JSON
+            </h1>
+            <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+              Herramienta profesional para convertir RIPS en formato TXT para generar el RIPS a JSON, ideal para capita o PGP.              
+            </p>
           </div>
 
           <div className="flex gap-4">
@@ -367,7 +378,7 @@
               <CardContent className="p-6">
                 <div className="space-y-2">
                   <p className="text-sm font-medium">Procesando archivos...</p>
-                  <Progress value={progress} className="w-full" />
+                  <Progress value={progress} className="w-full bg-sky-200" />
                   <p className="text-xs text-gray-500">{progress}% completado</p>
                 </div>
               </CardContent>
@@ -421,8 +432,8 @@
               // Opción 1: Botón deshabilitado sin spinner
               <Button 
                 onClick={generateRips} 
-                 disabled={isProcessing}  
-                className="flex-1 h-12 text-lg"
+                 disabled={isProcessing || !usuarioFile}  
+                className="flex-1 h-12 text-lg bg-indigo-400 hover:bg-indigo-500 text-white"
               >
                 Generar RIPS
               </Button>
@@ -430,7 +441,7 @@
               // Opción 2: Botón activo con spinner y texto dinámico
               <Button 
                 onClick={generateRips} 
-                 disabled={isProcessing} 
+                disabled={isProcessing}                  
                 className="flex-1 h-12 text-lg bg-indigo-500 text-white"
               >
                 <svg className="mr-3 -ml-1 size-5 animate-spin" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">

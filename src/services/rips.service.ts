@@ -10,6 +10,9 @@ import {
 } from "../types/rips.interfaces";
 export class RipsService {
   private cambiarFormatoFecha(fecha: string): string {
+    if (/^\d{4}-\d{2}-\d{2}$/.test(fecha)) {
+      return fecha;
+    }
     const partes = fecha.split("/");
     const dia = partes[0].padStart(2, "0");
     const mes = partes[1].padStart(2, "0");
@@ -18,12 +21,319 @@ export class RipsService {
   }
 
   private cambiarFormatoFechaConHora(fechaConHora: string): string {
+    if (/^\d{4}-\d{2}-\d{2}( \d{2}:\d{2})?$/.test(fechaConHora)) {
+      return fechaConHora;
+    }
     let partes = fechaConHora.split(" ");
     let fecha = partes[0].split("/");
     let hora = partes.length > 1 ? partes[1] : "00:00";
-
     let nuevaFecha = `${fecha[2]}-${fecha[1]}-${fecha[0]} ${hora}`;
     return nuevaFecha;
+  }
+
+  public parseJson(rips: RIPS): {
+    transaccionCSV: string;
+    usuariosCSV: string;
+    consultasCSV?: string;
+    procedimientosCSV?: string;
+    urgenciasCSV?: string;
+    hospitalizacionCSV?: string;
+    medicamentosCSV?: string;
+    otrosServiciosCSV?: string;
+  } {
+    // Transacción
+    const transaccionHeaders = [
+      "numDocumentoIdObligado",
+      "numFactura",
+      "tipoNota",
+      "numNota",
+    ];
+    const transaccionValues = [
+      rips.numDocumentoIdObligado,
+      rips.numFactura,
+      rips.tipoNota ?? "",
+      rips.numNota ?? "",
+    ];
+    const transaccionCSV = transaccionHeaders
+      .map((header, idx) => `${header},${transaccionValues[idx]}`)
+      .join("\n");
+
+    if (rips.usuarios.length === 0) {
+      return {
+        transaccionCSV,
+        usuariosCSV: "",
+        consultasCSV: "",
+        procedimientosCSV: "",
+      };
+    }
+
+    // Usuarios
+    const usuariosHeaders = [
+      "tipoDocumentoIdentificacion",
+      "numDocumentoIdentificacion",
+      "tipoUsuario",
+      "fechaNacimiento",
+      "codSexo",
+      "codPaisResidencia",
+      "codMunicipioResidencia",
+      "codZonaTerritorialResidencia",
+      "incapacidad",
+      "codPaisOrigen",
+      "consecutivo",
+    ];
+    const usuariosCSV = [
+      usuariosHeaders.join(","),
+      ...rips.usuarios.map((u) =>
+        usuariosHeaders.map((h) => u[h] ?? "").join(",")
+      ),
+    ].join("\n");
+
+    // Consultas
+    const consultasHeaders = [
+      "numDocIdPaciente",
+      "codPrestador",
+      "fechaInicioAtencion",
+      "numAutorizacion",
+      "codConsulta",
+      "modalidadGrupoServicioTecSal",
+      "grupoServicios",
+      "codServicio",
+      "finalidadTecnologiaSalud",
+      "causaMotivoAtencion",
+      "codDiagnosticoPrincipal",
+      "codDiagnosticoRelacionado1",
+      "codDiagnosticoRelacionado2",
+      "codDiagnosticoRelacionado3",
+      "tipoDiagnosticoPrincipal",
+      "tipoDocumentoIdentificacion",
+      "numDocumentoIdentificacion",
+      "vrServicio",
+      "conceptoRecaudo",
+      "valorPagoModerador",
+      "numFEVPagoModerador",
+      "consecutivo",
+    ];
+
+    const consultasRows = rips.usuarios.flatMap((u) =>
+      (u.servicios.consultas ?? []).map((p) =>
+        consultasHeaders
+          .map((h) =>
+            h === "numDocIdPaciente" ? u.numDocumentoIdentificacion : p[h] ?? ""
+          )
+          .join(",")
+      )
+    );
+
+    const consultasCSV =
+      consultasRows.length > 0
+        ? [consultasHeaders.join(","), ...consultasRows].join("\n")
+        : null;
+
+    // Procedimientos
+    const procedimientosHeaders = [
+      "numDocIdPaciente",
+      "codPrestador",
+      "fechaInicioAtencion",
+      "idMIPRES",
+      "numAutorizacion",
+      "codProcedimiento",
+      "viaIngresoServicioSalud",
+      "modalidadGrupoServicioTecSal",
+      "grupoServicios",
+      "codServicio",
+      "finalidadTecnologiaSalud",
+      "tipoDocumentoIdentificacion",
+      "numDocumentoIdentificacion",
+      "codDiagnosticoPrincipal",
+      "codDiagnosticoRelacionado",
+      "codComplicacion",
+      "vrServicio",
+      "conceptoRecaudo",
+      "valorPagoModerador",
+      "numFEVPagoModerador",
+      "consecutivo",
+    ];
+
+    const procedimientosRows = rips.usuarios.flatMap((u) =>
+      (u.servicios.procedimientos ?? []).map((p) =>
+        procedimientosHeaders
+          .map((h) =>
+            h === "numDocIdPaciente" ? u.numDocumentoIdentificacion : p[h] ?? ""
+          )
+          .join(",")
+      )
+    );
+
+    const procedimientosCSV =
+      procedimientosRows.length > 0
+        ? [procedimientosHeaders.join(","), ...procedimientosRows].join("\n")
+        : null;
+
+    // Urgencias
+    const urgenciasHeaders = [
+      "numDocIdPaciente",
+      "codPrestador",
+      "fechaInicioAtencion",
+      "causaMotivoAtencion",
+      "codDiagnosticoPrincipal",
+      "codDiagnosticoPrincipalE",
+      "codDiagnosticoRelacionadoE1",
+      "codDiagnosticoRelacionadoE2",
+      "codDiagnosticoRelacionadoE3",
+      "condicionDestinoUsuarioEgreso",
+      "codDiagnosticoCausaMuerte",
+      "fechaEgreso",
+      "consecutivo",
+    ];
+
+    const urgenciasRows = rips.usuarios.flatMap((u) =>
+      (u.servicios.urgencias ?? []).map((urg) =>
+        urgenciasHeaders
+          .map((h) =>
+            h === "numDocIdPaciente"
+              ? u.numDocumentoIdentificacion
+              : urg[h] ?? ""
+          )
+          .join(",")
+      )
+    );
+
+    const urgenciasCSV =
+      urgenciasRows.length > 0
+        ? [urgenciasHeaders.join(","), ...urgenciasRows].join("\n")
+        : null;
+
+    // Hospitalización
+    const hospitalizacionHeaders = [
+      "numDocIdPaciente",
+      "codPrestador",
+      "viaIngresoServicioSalud",
+      "fechaInicioAtencion",
+      "numAutorizacion",
+      "causaMotivoAtencion",
+      "codDiagnosticoPrincipal",
+      "codDiagnosticoPrincipalE",
+      "codDiagnosticoRelacionadoE1",
+      "codDiagnosticoRelacionadoE2",
+      "codDiagnosticoRelacionadoE3",
+      "codComplicacion",
+      "condicionDestinoUsuarioEgreso",
+      "codDiagnosticoCausaMuerte",
+      "fechaEgreso",
+      "consecutivo",
+    ];
+
+    const hospitalizacionRows = rips.usuarios.flatMap((u) =>
+      (u.servicios.hospitalizacion ?? []).map((hosp) =>
+        hospitalizacionHeaders
+          .map((h) =>
+            h === "numDocIdPaciente"
+              ? u.numDocumentoIdentificacion
+              : hosp[h] ?? ""
+          )
+          .join(",")
+      )
+    );
+
+    const hospitalizacionCSV =
+      hospitalizacionRows.length > 0
+        ? [hospitalizacionHeaders.join(","), ...hospitalizacionRows].join("\n")
+        : null;
+
+    // Medicamentos
+    const medicamentosHeaders = [
+      "numDocIdPaciente",
+      "codPrestador",
+      "numAutorizacion",
+      "idMIPRES",
+      "fechaDispensAdmon",
+      "codDiagnosticoPrincipal",
+      "codDiagnosticoRelacionado",
+      "tipoMedicamento",
+      "codTecnologiaSalud",
+      "nomTecnologiaSalud",
+      "concentracionMedicamento",
+      "unidadMedida",
+      "formaFarmaceutica",
+      "unidadMinDispensa",
+      "cantidadMedicamento",
+      "diasTratamiento",
+      "tipoDocumentoIdentificacion",
+      "numDocumentoIdentificacion",
+      "vrUnitMedicamento",
+      "vrServicio",
+      "conceptoRecaudo",
+      "valorPagoModerador",
+      "numFEVPagoModerador",
+      "consecutivo",
+    ];
+
+    const medicamentosRows = rips.usuarios.flatMap((u) =>
+      (u.servicios.medicamentos ?? []).map((med) =>
+        medicamentosHeaders
+          .map((h) =>
+            h === "numDocIdPaciente"
+              ? u.numDocumentoIdentificacion
+              : med[h] ?? ""
+          )
+          .join(",")
+      )
+    );
+
+    const medicamentosCSV =
+      medicamentosRows.length > 0
+        ? [medicamentosHeaders.join(","), ...medicamentosRows].join("\n")
+        : null;
+
+    // Otros Servicios
+    const otrosServiciosHeaders = [
+      "numDocIdPaciente",
+      "codPrestador",
+      "numAutorizacion",
+      "idMIPRES",
+      "fechaSuministroTecnologia",
+      "tipoOS",
+      "codTecnologiaSalud",
+      "nomTecnologiaSalud",
+      "cantidadOS",
+      "tipoDocumentoIdentificacion",
+      "numDocumentoIdentificacion",
+      "vrUnitOS",
+      "vrServicio",
+      "conceptoRecaudo",
+      "valorPagoModerador",
+      "numFEVPagoModerador",
+      "consecutivo",
+    ];
+
+    const otrosServiciosRows = rips.usuarios.flatMap((u) =>
+      (u.servicios.otrosServicios ?? []).map((otr) =>
+        otrosServiciosHeaders
+          .map((h) =>
+            h === "numDocIdPaciente"
+              ? u.numDocumentoIdentificacion
+              : otr[h] ?? ""
+          )
+          .join(",")
+      )
+    );
+
+    const otrosServiciosCSV =
+      otrosServiciosRows.length > 0
+        ? [otrosServiciosHeaders.join(","), ...otrosServiciosRows].join("\n")
+        : null;
+
+    // Al final del método, retorna también los nuevos CSV:
+    return {
+      transaccionCSV,
+      usuariosCSV,
+      consultasCSV,
+      procedimientosCSV,
+      urgenciasCSV,
+      hospitalizacionCSV,
+      medicamentosCSV,
+      otrosServiciosCSV,
+    };
   }
 
   async parseUsuarios(file: File): Promise<Usuario[]> {
@@ -478,103 +788,7 @@ export class RipsService {
     });
   }
 
-  aggregateData(
-    usuarios: Usuario[],
-    consultas: Consulta[],
-    procedimientos: Procedimiento[],
-    numDocumentoIdObligado: string,
-    numFactura: string
-  ): RIPS {
-    // Crear una estructura de RIPS
-    const rips: RIPS = {
-      numDocumentoIdObligado,
-      numFactura,
-      tipoNota: null,
-      numNota: null,
-      usuarios: [],
-    };
-
-    // Hacer una copia de los usuarios para no modificar el original
-    const usuariosCopia = [...usuarios];
-
-    // Asignar consultas a usuarios
-    usuariosCopia.forEach((usuario) => {
-      const consultasUsuario = consultas.filter(
-        (consulta) =>
-          consulta.numDocIdPaciente === usuario.numDocumentoIdentificacion
-      );
-
-      const procedimientosUsuario = procedimientos.filter(
-        (procedimiento) =>
-          procedimiento.numDocIdPaciente === usuario.numDocumentoIdentificacion
-      );
-
-      const ce = consultasUsuario.map(
-        ({ numDocIdPaciente, ...resto }) => resto
-      );
-
-      const proc = procedimientosUsuario.map(
-        ({ numDocIdPaciente, ...resto }) => resto
-      );
-
-      usuario.servicios = {
-        consultas: ce.length > 0 ? ce : undefined,
-        procedimientos: proc.length > 0 ? proc : undefined,
-      };
-    });
-
-    rips.usuarios = usuariosCopia;
-    return rips;
-  }
-
-  aggregateDataMed(
-    usuarios: Usuario[],
-    medicamentos: Medicamento[],
-    otrosServicios: OtrosServicio[],
-    numDocumentoIdObligado: string,
-    numFactura: string
-  ): RIPS {
-    // Crear una estructura de RIPS
-    const rips: RIPS = {
-      numDocumentoIdObligado,
-      numFactura,
-      tipoNota: null,
-      numNota: null,
-      usuarios: [],
-    };
-
-    // Hacer una copia de los usuarios para no modificar el original
-    const usuariosCopia = [...usuarios];
-
-    // Asignar consultas a usuarios
-    usuariosCopia.forEach((usuario) => {
-      const medicamentosUsuario = medicamentos.filter(
-        (med) => med.numDocIdPaciente === usuario.numDocumentoIdentificacion
-      );
-
-      const otrosServUsuario = otrosServicios.filter(
-        (otros) => otros.numDocIdPaciente === usuario.numDocumentoIdentificacion
-      );
-
-      const me = medicamentosUsuario.map(
-        ({ numDocIdPaciente, ...resto }) => resto
-      );
-
-      const otr = otrosServUsuario.map(
-        ({ numDocIdPaciente, ...resto }) => resto
-      );
-
-      usuario.servicios = {
-        medicamentos: me.length > 0 ? me : undefined,
-        otrosServicios: otr.length > 0 ? otr : undefined,
-      };
-    });
-
-    rips.usuarios = usuariosCopia;
-    return rips;
-  }
-
-  aggregateDataAll(
+  public aggregateDataAll(
     usuarios: Usuario[],
     consultas: Consulta[],
     procedimientos: Procedimiento[],
@@ -656,7 +870,7 @@ export class RipsService {
     return rips;
   }
 
-  downloadJson(data: any, filename: string): void {
+  public downloadJson(data: any, filename: string): void {
     const json = JSON.stringify(data, null, 2);
     const blob = new Blob([json], { type: "application/json" });
     const url = URL.createObjectURL(blob);
