@@ -415,11 +415,11 @@
                     <p className="text-sm text-gray-600">Otros Servicios</p>
                   </div>
                   <div className="p-4 bg-green-50 rounded-lg">
-                    <p className="text-2xl font-bold text-lime-600">{estadisticas.otrosServicios.toLocaleString("es-ES")}</p>
+                    <p className="text-2xl font-bold text-lime-600">{estadisticas.urgencias.toLocaleString("es-ES")}</p>
                     <p className="text-sm text-gray-600">Urgencias</p>
                   </div>
                   <div className="p-4 bg-green-50 rounded-lg">
-                    <p className="text-2xl font-bold text-cyan-600">{estadisticas.otrosServicios.toLocaleString("es-ES")}</p>
+                    <p className="text-2xl font-bold text-cyan-600">{estadisticas.hospitalizaciones.toLocaleString("es-ES")}</p>
                     <p className="text-sm text-gray-600">Hospitalizaciones</p>
                   </div>
                 </div>
