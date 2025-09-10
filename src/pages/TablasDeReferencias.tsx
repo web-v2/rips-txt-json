@@ -16,27 +16,43 @@ export default function TablasDeReferencias() {
   const [data, setData] = useState<RefRow[]>([]);
   const [tablaSeleccionada, setTablaSeleccionada] = useState<string>("");
   const [filtro, setFiltro] = useState<string>("");
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
-  // Cargar archivo automáticamente desde assets/tables.csv
+   // 🔹 Cargar archivo automáticamente desde public/assets/tables.csv
   useEffect(() => {
-    fetch("/assets/tables.csv")
-      .then((res) => res.text())
-      .then((text) => {
-        const rows = text.split("\n").map((row) => row.trim()).filter(Boolean);
-        const parsed: RefRow[] = rows
-          .slice(1)
-          .map((row) => {
-            const [Tabla, Codigo, Nombre] = row.split(";");
-            return { Tabla, Codigo, Nombre };
-          });
+    const loadCSV = async () => {
+      try {
+        const res = await fetch(`/assets/tables.csv`);
+        if (!res.ok) throw new Error(`Error ${res.status}: No se pudo cargar el archivo`);
+
+        const text = await res.text();
+
+        const rows = text
+          .split("\n")
+          .map((row) => row.trim())
+          .filter(Boolean);
+
+        const parsed: RefRow[] = rows.slice(1).map((row) => {
+          const [Tabla, Codigo, Nombre] = row.split(";");
+          return { Tabla, Codigo, Nombre };
+        });
+
         setData(parsed);
-      });
+      } catch (err: any) {
+        setError(err.message || "Error cargando CSV");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadCSV();
   }, []);
 
-  // Tablas únicas
+  // 🔹 Tablas únicas
   const tablas = Array.from(new Set(data.map((row) => row.Tabla)));
 
-  // Filtrado
+  // 🔹 Filtrado
   const filtrados = data.filter(
     (row) =>
       (!tablaSeleccionada || row.Tabla === tablaSeleccionada) &&
@@ -47,80 +63,88 @@ export default function TablasDeReferencias() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-4">
       <div className="max-w-4xl mx-auto space-y-6">
-
         {/* Header */}
         <div className="text-center mb-8">
-        <div className="flex items-center justify-center mb-4">
+          <div className="flex items-center justify-center mb-4">
             <div className="bg-gradient-to-r from-primary to-secondary p-3 rounded-xl shadow-lg">
-            <SearchCode className="h-8 w-8 text-white" />
+              <SearchCode className="h-8 w-8 text-white" />
             </div>
-        </div>
-        <h1 className="text-4xl font-bold mb-2 bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+          </div>
+          <h1 className="text-4xl font-bold mb-2 bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
             Tablas de Referencias SISPRO
-        </h1>
-
-        </div>        
+          </h1>
+        </div>
 
         <div className="flex gap-4">
           <BackToDashboardButton />
         </div>
 
-      <Card>
+        <Card>
           <CardHeader>
             <CardTitle>Tablas de Referencia</CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
-            {/* Ya no se necesita el input de archivo */}
-            {data.length > 0 && (
-              <div className="flex gap-3 items-center">
-                <select
-                  className="border rounded px-2 py-1"
-                  value={tablaSeleccionada}
-                  onChange={(e) => setTablaSeleccionada(e.target.value)}
-                >
-                  <option value="">Todas las tablas</option>
-                  {tablas.map((tabla) => (
-                    <option key={tabla} value={tabla}>
-                      {tabla}
-                    </option>
-                  ))}
-                </select>
-                <Input
-                  placeholder="Filtrar por código o nombre"
-                  value={filtro}
-                  onChange={(e) => setFiltro(e.target.value)}
-                  className="w-64"
-                />
-                <Badge variant="default">{filtrados.length} resultados</Badge>
-              </div>
+            {loading && <p className="text-muted-foreground">Cargando datos...</p>}
+            {error && <p className="text-red-500">{error}</p>}
+
+            {!loading && !error && data.length > 0 && (
+              <>
+                {/* Controles */}
+                <div className="flex gap-3 items-center">
+                  <select
+                    className="border rounded px-2 py-1"
+                    value={tablaSeleccionada}
+                    onChange={(e) => setTablaSeleccionada(e.target.value)}
+                  >
+                    <option value="">Todas las tablas</option>
+                    {tablas.map((tabla) => (
+                      <option key={tabla} value={tabla}>
+                        {tabla}
+                      </option>
+                    ))}
+                  </select>
+                  <Input
+                    placeholder="Filtrar por código o nombre"
+                    value={filtro}
+                    onChange={(e) => setFiltro(e.target.value)}
+                    className="w-64"
+                  />
+                  <Badge variant="default">{filtrados.length} resultados</Badge>
+                </div>
+
+                {/* Tabla */}
+                <div className="mt-4 max-h-96 overflow-auto">
+                  <table className="min-w-full text-sm">
+                    <thead>
+                      <tr className="bg-muted">
+                        <th className="text-left px-2 py-1">Código</th>
+                        <th className="text-left px-2 py-1">Nombre</th>
+                        <th className="text-left px-2 py-1">Tabla</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {filtrados.map((row, idx) => (
+                        <tr key={idx} className="border-b">
+                          <td className="px-2 py-1">{row.Codigo}</td>
+                          <td className="px-2 py-1">{row.Nombre}</td>
+                          <td className="px-2 py-1">{row.Tabla}</td>
+                        </tr>
+                      ))}
+                      {filtrados.length === 0 && (
+                        <tr>
+                          <td
+                            colSpan={3}
+                            className="text-center py-4 text-muted-foreground"
+                          >
+                            No hay resultados para mostrar.
+                          </td>
+                        </tr>
+                      )}
+                    </tbody>
+                  </table>
+                </div>
+              </>
             )}
-            <div className="mt-4 max-h-96 overflow-auto">
-              <table className="min-w-full text-sm">
-                <thead>
-                  <tr className="bg-muted">
-                    <th className="text-left px-2 py-1">Código</th>
-                    <th className="text-left px-2 py-1">Nombre</th>
-                    <th className="text-left px-2 py-1">Tabla</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {filtrados.map((row, idx) => (
-                    <tr key={idx} className="border-b">
-                      <td className="px-2 py-1">{row.Codigo}</td>
-                      <td className="px-2 py-1">{row.Nombre}</td>
-                      <td className="px-2 py-1">{row.Tabla}</td>
-                    </tr>
-                  ))}
-                  {filtrados.length === 0 && (
-                    <tr>
-                      <td colSpan={3} className="text-center py-4 text-muted-foreground">
-                        No hay resultados para mostrar.
-                      </td>
-                    </tr>
-                  )}
-                </tbody>
-              </table>
-            </div>
           </CardContent>
         </Card>
 
