@@ -23,7 +23,7 @@ export default function TablasDeReferencias() {
   useEffect(() => {
     const loadCSV = async () => {
       try {
-        const res = await fetch(`/assets/tables.csv`);
+        const res = await fetch(import.meta.env.BASE_URL + "assets/tables.csv");
         if (!res.ok) throw new Error(`Error ${res.status}: No se pudo cargar el archivo`);
 
         const text = await res.text();
@@ -48,6 +48,24 @@ export default function TablasDeReferencias() {
 
     loadCSV();
   }, []);
+
+  /*useEffect(() => {
+    fetch(import.meta.env.BASE_URL + "assets/tables.csv")
+      .then((res) => {
+        if (!res.ok) throw new Error("No se pudo cargar el CSV");
+        return res.text();
+      })
+      .then((text) => {
+        const rows = text.split("\n").map(r => r.trim()).filter(Boolean);
+        const parsed: RefRow[] = rows.slice(1).map((row) => {
+          const [Tabla, Codigo, Nombre] = row.split(";");
+          return { Tabla, Codigo, Nombre };
+        });
+        setData(parsed);
+      })
+      .catch((err) => console.error(err));
+  }, []);*/
+
 
   // 🔹 Tablas únicas
   const tablas = Array.from(new Set(data.map((row) => row.Tabla)));
