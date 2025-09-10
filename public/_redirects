@@ -1,0 +1,5 @@
+# Deja pasar assets estáticos
+/assets/*   /assets/:splat   200
+
+# Todo lo demás va a React
+/*          /index.html      200
