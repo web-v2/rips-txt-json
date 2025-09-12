@@ -260,18 +260,18 @@ RIPSCausaExternaVersion2;36;IVE por violencia sexual, incesto o por inseminacion
 RIPSCausaExternaVersion2;37;Evento adverso en salud
 RIPSCausaExternaVersion2;38;Enfermedad general
 RIPSCausaExternaVersion2;39;Enfermedad laboral
-RIPSCausaExternaVersion2;40;Promocion y mantenimiento de la salud – intervenciones individuales
+RIPSCausaExternaVersion2;40;Promocion y mantenimiento de la salud ï¿½ intervenciones individuales
 RIPSCausaExternaVersion2;41;Intervencion colectiva
 RIPSCausaExternaVersion2;42;Atencion de poblacion materno perinatal
 RIPSCausaExternaVersion2;43;Riesgo ambiental
 RIPSCausaExternaVersion2;44;Otros eventos Catastroficos
-RIPSCausaExternaVersion2;45;Accidente de mina antipersonal – MAP
-RIPSCausaExternaVersion2;46;Accidente de Artefacto Explosivo Improvisado – AEI
+RIPSCausaExternaVersion2;45;Accidente de mina antipersonal ï¿½ MAP
+RIPSCausaExternaVersion2;46;Accidente de Artefacto Explosivo Improvisado ï¿½ AEI
 RIPSCausaExternaVersion2;47;Accidente de Municion Sin Explotar- MUSE
 RIPSCausaExternaVersion2;48;Otra victima de conflicto armado colombiano
-RIPSTipoDiagnosticoPrincipalVersion2;1;Impresion diagnostica
-RIPSTipoDiagnosticoPrincipalVersion2;2;Confirmado nuevo
-RIPSTipoDiagnosticoPrincipalVersion2;3;Confirmado repetido
+RIPSTipoDiagnosticoPrincipalVersion2;01;Impresion diagnostica
+RIPSTipoDiagnosticoPrincipalVersion2;02;Confirmado nuevo
+RIPSTipoDiagnosticoPrincipalVersion2;03;Confirmado repetido
 conceptoRecaudo;01;Copago
 conceptoRecaudo;02;Cuota moderadora
 conceptoRecaudo;03;Pagos Compartidos en Planes Voluntarios de Salud
@@ -693,7 +693,7 @@ Municipio;05318;GUARNE
 Municipio;05321;GUATAPE
 Municipio;05347;HELICONIA
 Municipio;05353;HISPANIA
-Municipio;05360;ITAGÜI
+Municipio;05360;ITAGï¿½I
 Municipio;05361;ITUANGO
 Municipio;05364;JARDIN
 Municipio;05368;JERICO
@@ -872,7 +872,7 @@ Municipio;15299;GARAGOA
 Municipio;15317;GUACAMAYAS
 Municipio;15322;GUATEQUE
 Municipio;15325;GUAYATA
-Municipio;15332;GÜICAN DE LA SIERRA
+Municipio;15332;Gï¿½ICAN DE LA SIERRA
 Municipio;15362;IZA
 Municipio;15367;JENESANO
 Municipio;15368;JERICO
@@ -942,7 +942,7 @@ Municipio;15806;TIBASOSA
 Municipio;15808;TINJACA
 Municipio;15810;TIPACOQUE
 Municipio;15814;TOCA
-Municipio;15816;TOGÜI
+Municipio;15816;TOGï¿½I
 Municipio;15820;TOPAGA
 Municipio;15822;TOTA
 Municipio;15832;TUNUNGUA
@@ -1366,7 +1366,7 @@ Municipio;52215;CORDOBA
 Municipio;52224;CUASPUD
 Municipio;52227;CUMBAL
 Municipio;52233;CUMBITARA
-Municipio;52240;CHACHAGÜI
+Municipio;52240;CHACHAGï¿½I
 Municipio;52250;EL CHARCO
 Municipio;52254;EL PENOL
 Municipio;52256;EL ROSARIO
@@ -1387,7 +1387,7 @@ Municipio;52399;LA UNION
 Municipio;52405;LEIVA
 Municipio;52411;LINARES
 Municipio;52418;LOS ANDES
-Municipio;52427;MAGÜI
+Municipio;52427;MAGï¿½I
 Municipio;52435;MALLAMA
 Municipio;52473;MOSQUERA
 Municipio;52480;NARINO
@@ -1521,7 +1521,7 @@ Municipio;68318;GUACA
 Municipio;68320;GUADALUPE
 Municipio;68322;GUAPOTA
 Municipio;68324;GUAVATA
-Municipio;68327;GÜEPSA
+Municipio;68327;Gï¿½EPSA
 Municipio;68344;HATO
 Municipio;68368;JESUS MARIA
 Municipio;68370;JORDAN
