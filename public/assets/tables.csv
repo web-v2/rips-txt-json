@@ -18,38 +18,38 @@ TipoIdPISIS;RC;Registro civil
 TipoIdPISIS;SC;Salvoconducto
 TipoIdPISIS;SI;Sin identificacion
 TipoIdPISIS;TI;Tarjeta de Identidad
-RIPSTipoUsuarioVersion2;1;Contributivo cotizante
-RIPSTipoUsuarioVersion2;2;Contributivo beneficiario
-RIPSTipoUsuarioVersion2;3;Contributivo adicional
-RIPSTipoUsuarioVersion2;4;Subsidiado
-RIPSTipoUsuarioVersion2;5;No afiliado
-RIPSTipoUsuarioVersion2;6;Especial o Excepcion cotizante
-RIPSTipoUsuarioVersion2;7;Especial o Excepcion beneficiario
-RIPSTipoUsuarioVersion2;8;Personas privadas de la libertad a cargo del Fondo Nacional de Salud
-RIPSTipoUsuarioVersion2;9;Tomador / Amparado ARL
+RIPSTipoUsuarioVersion2;01;Contributivo cotizante
+RIPSTipoUsuarioVersion2;02;Contributivo beneficiario
+RIPSTipoUsuarioVersion2;03;Contributivo adicional
+RIPSTipoUsuarioVersion2;04;Subsidiado
+RIPSTipoUsuarioVersion2;05;No afiliado
+RIPSTipoUsuarioVersion2;06;Especial o Excepcion cotizante
+RIPSTipoUsuarioVersion2;07;Especial o Excepcion beneficiario
+RIPSTipoUsuarioVersion2;08;Personas privadas de la libertad a cargo del Fondo Nacional de Salud
+RIPSTipoUsuarioVersion2;09;Tomador / Amparado ARL
 RIPSTipoUsuarioVersion2;10;Tomador / Amparado SOAT
 RIPSTipoUsuarioVersion2;11;Tomador / Amparado Planes  voluntarios de salud
 RIPSTipoUsuarioVersion2;12;Particular
 Sexo;M;Hombre
 Sexo;I;Indeterminado o Intersexual
 Sexo;F;Mujer
-ZonaVersion2;1;Rural
-ZonaVersion2;2;Urbano
+ZonaVersion2;01;Rural
+ZonaVersion2;02;Urbano
 LstSINO;NO;NO
 LstSINO;SI;SI
-ModalidadAtencion;1;Intramural
-ModalidadAtencion;2;Extramural unidad movil
-ModalidadAtencion;3;Extramural domiciliaria
-ModalidadAtencion;4;Extramural jornada de salud
-ModalidadAtencion;6;Telemedicina interactiva
-ModalidadAtencion;7;Telemedicina no interactiva
-ModalidadAtencion;8;Telemedicina telexperticia
-ModalidadAtencion;9;Telemedicina telemonitoreo
-GrupoServicios;1;Consulta externa
-GrupoServicios;2;Apoyo diagnostico y complementacion  terapeutica
-GrupoServicios;3;Internacion
-GrupoServicios;4;Quirurgico
-GrupoServicios;5;Atencion inmediata
+ModalidadAtencion;01;Intramural
+ModalidadAtencion;02;Extramural unidad movil
+ModalidadAtencion;03;Extramural domiciliaria
+ModalidadAtencion;04;Extramural jornada de salud
+ModalidadAtencion;06;Telemedicina interactiva
+ModalidadAtencion;07;Telemedicina no interactiva
+ModalidadAtencion;08;Telemedicina telexperticia
+ModalidadAtencion;09;Telemedicina telemonitoreo
+GrupoServicios;01;Consulta externa
+GrupoServicios;02;Apoyo diagnostico y complementacion  terapeutica
+GrupoServicios;03;Internacion
+GrupoServicios;04;Quirurgico
+GrupoServicios;05;Atencion inmediata
 Servicios;105;CUIDADO INTERMEDIO NEONATAL
 Servicios;106;CUIDADO INTERMEDIO PEDIATRICO
 Servicios;107;CUIDADO INTERMEDIO ADULTOS
@@ -272,37 +272,37 @@ RIPSCausaExternaVersion2;48;Otra victima de conflicto armado colombiano
 RIPSTipoDiagnosticoPrincipalVersion2;1;Impresion diagnostica
 RIPSTipoDiagnosticoPrincipalVersion2;2;Confirmado nuevo
 RIPSTipoDiagnosticoPrincipalVersion2;3;Confirmado repetido
-conceptoRecaudo;1;Copago
-conceptoRecaudo;2;Cuota moderadora
-conceptoRecaudo;3;Pagos Compartidos en Planes Voluntarios de Salud
-conceptoRecaudo;4;Anticipo
-conceptoRecaudo;5;No aplica
-ViaIngresoUsuario;1;Demanda espontanea
-ViaIngresoUsuario;2;Derivado de consulta externa
-ViaIngresoUsuario;3;Derivado de urgencias
-ViaIngresoUsuario;4;Derivado de hospitalizacion
-ViaIngresoUsuario;5;Derivado de sala de cirugia
-ViaIngresoUsuario;6;Derivado de sala de partos
-ViaIngresoUsuario;7;Recien nacido en la institucion
-ViaIngresoUsuario;8;Recien nacido en otra institucion
-ViaIngresoUsuario;9;Derivado o referido de hospitalizacion domiciliaria
+conceptoRecaudo;01;Copago
+conceptoRecaudo;02;Cuota moderadora
+conceptoRecaudo;03;Pagos Compartidos en Planes Voluntarios de Salud
+conceptoRecaudo;04;Anticipo
+conceptoRecaudo;05;No aplica
+ViaIngresoUsuario;01;Demanda espontanea
+ViaIngresoUsuario;02;Derivado de consulta externa
+ViaIngresoUsuario;03;Derivado de urgencias
+ViaIngresoUsuario;04;Derivado de hospitalizacion
+ViaIngresoUsuario;05;Derivado de sala de cirugia
+ViaIngresoUsuario;06;Derivado de sala de partos
+ViaIngresoUsuario;07;Recien nacido en la institucion
+ViaIngresoUsuario;08;Recien nacido en otra institucion
+ViaIngresoUsuario;09;Derivado o referido de hospitalizacion domiciliaria
 ViaIngresoUsuario;10;Derivado de atencion domiciliaria
 ViaIngresoUsuario;11;Derivado de telemedicina
 ViaIngresoUsuario;12;Derivado de jornada de salud
 ViaIngresoUsuario;13;Referido de otra institucion
 ViaIngresoUsuario;14;Contrarreferido de otra institucion
-CondicionyDestinoUsuarioEgreso;1;Paciente con destino a su domicilio
-CondicionyDestinoUsuarioEgreso;2;Paciente muerto
-CondicionyDestinoUsuarioEgreso;3;Paciente derivado a otro servicio
-CondicionyDestinoUsuarioEgreso;4;Referido a otra institucion
-CondicionyDestinoUsuarioEgreso;5;Contra referido a otra institucion
-CondicionyDestinoUsuarioEgreso;6;Derivado o referido a hospitalizacion domiciliaria
-CondicionyDestinoUsuarioEgreso;7;Derivado a servicio social
-TipoMedicamentoPOSVersion2;1;Medicamento con uso con registro sanitario
-TipoMedicamentoPOSVersion2;2;Medicamento con uso como vital no disponible definido por INVIMA
-TipoMedicamentoPOSVersion2;3;Preparacion magistral
-TipoMedicamentoPOSVersion2;4;Medicamento con uso no incluido en  el registro sanitario (Listado UNIRS)
-TipoMedicamentoPOSVersion2;5;Medicamento con autorizacion sanitaria de uso emergencia ASUE
+CondicionyDestinoUsuarioEgreso;01;Paciente con destino a su domicilio
+CondicionyDestinoUsuarioEgreso;02;Paciente muerto
+CondicionyDestinoUsuarioEgreso;03;Paciente derivado a otro servicio
+CondicionyDestinoUsuarioEgreso;04;Referido a otra institucion
+CondicionyDestinoUsuarioEgreso;05;Contra referido a otra institucion
+CondicionyDestinoUsuarioEgreso;06;Derivado o referido a hospitalizacion domiciliaria
+CondicionyDestinoUsuarioEgreso;07;Derivado a servicio social
+TipoMedicamentoPOSVersion2;01;Medicamento con uso con registro sanitario
+TipoMedicamentoPOSVersion2;02;Medicamento con uso como vital no disponible definido por INVIMA
+TipoMedicamentoPOSVersion2;03;Preparacion magistral
+TipoMedicamentoPOSVersion2;04;Medicamento con uso no incluido en  el registro sanitario (Listado UNIRS)
+TipoMedicamentoPOSVersion2;05;Medicamento con autorizacion sanitaria de uso emergencia ASUE
 UPR;1;AMPOLLA
 UPR;10;ENVASE
 UPR;11;CAJA
@@ -381,41 +381,41 @@ UPR;8;BLOQUE
 UPR;80;LITRO
 UPR;81;OVULO
 UPR;9;BOLO
-TipoOtrosServicios;1;DISPOSITIVOS MEDICOS E INSUMOS
-TipoOtrosServicios;2;TRASLADOS
-TipoOtrosServicios;3;ESTANCIAS
-TipoOtrosServicios;4;SERVICIOS COMPLEMENTARIOS
-TipoOtrosServicios;5;HONORARIOS
-Pais;4;AFGANISTAN
-Pais;8;ALBANIA
-Pais;10;ANTARTIDA
-Pais;12;ARGELIA
-Pais;16;SAMOA AMERICANA
-Pais;20;ANDORRA
-Pais;24;ANGOLA
-Pais;28;ANTIGUA Y BARBUDA
-Pais;31;AZERBAIYAN
-Pais;32;ARGENTINA
-Pais;36;AUSTRALIA
-Pais;40;AUSTRIA
-Pais;44;BAHAMAS
-Pais;48;BAREIN
-Pais;50;BANGLADES
-Pais;51;ARMENIA
-Pais;52;BARBADOS
-Pais;56;BELGICA
-Pais;60;BERMUDA
-Pais;64;BUTAN
-Pais;68;BOLIVIA
-Pais;70;BOSNIA-HERZEGOVINA
-Pais;72;BOTSUANA
-Pais;74;ISLA BOUVET
-Pais;76;BRAZIL
-Pais;84;BELICE
-Pais;86;TERRITORIO BRITANICO DEL OCEANO INDICO
-Pais;90;ISLAS SOLOMON
-Pais;92;ISLAS VIRGENES BRITANICAS
-Pais;96;BRUNEI
+TipoOtrosServicios;01;DISPOSITIVOS MEDICOS E INSUMOS
+TipoOtrosServicios;02;TRASLADOS
+TipoOtrosServicios;03;ESTANCIAS
+TipoOtrosServicios;04;SERVICIOS COMPLEMENTARIOS
+TipoOtrosServicios;05;HONORARIOS
+Pais;004;AFGANISTAN
+Pais;008;ALBANIA
+Pais;010;ANTARTIDA
+Pais;012;ARGELIA
+Pais;016;SAMOA AMERICANA
+Pais;020;ANDORRA
+Pais;024;ANGOLA
+Pais;028;ANTIGUA Y BARBUDA
+Pais;031;AZERBAIYAN
+Pais;032;ARGENTINA
+Pais;036;AUSTRALIA
+Pais;040;AUSTRIA
+Pais;044;BAHAMAS
+Pais;048;BAREIN
+Pais;050;BANGLADES
+Pais;051;ARMENIA
+Pais;052;BARBADOS
+Pais;056;BELGICA
+Pais;060;BERMUDA
+Pais;064;BUTAN
+Pais;068;BOLIVIA
+Pais;070;BOSNIA-HERZEGOVINA
+Pais;072;BOTSUANA
+Pais;074;ISLA BOUVET
+Pais;076;BRAZIL
+Pais;084;BELICE
+Pais;086;TERRITORIO BRITANICO DEL OCEANO INDICO
+Pais;090;ISLAS SOLOMON
+Pais;092;ISLAS VIRGENES BRITANICAS
+Pais;096;BRUNEI
 Pais;100;BULGARIA
 Pais;104;MYANMAR (FORMER BURMA)
 Pais;108;BURUNDI
@@ -635,154 +635,154 @@ Pais;876;WALLIS Y FUTUNA
 Pais;882;SAMOA
 Pais;887;YEMEN
 Pais;894;ZAMBIA
-Municipio;5001;MEDELLIN
-Municipio;5002;ABEJORRAL
-Municipio;5004;ABRIAQUI
-Municipio;5021;ALEJANDRIA
-Municipio;5030;AMAGA
-Municipio;5031;AMALFI
-Municipio;5034;ANDES
-Municipio;5036;ANGELOPOLIS
-Municipio;5038;ANGOSTURA
-Municipio;5040;ANORI
-Municipio;5042;SANTA FE DE ANTIOQUIA
-Municipio;5044;ANZA
-Municipio;5045;APARTADO
-Municipio;5051;ARBOLETES
-Municipio;5055;ARGELIA
-Municipio;5059;ARMENIA
-Municipio;5079;BARBOSA
-Municipio;5086;BELMIRA
-Municipio;5088;BELLO
-Municipio;5091;BETANIA
-Municipio;5093;BETULIA
-Municipio;5101;CIUDAD BOLIVAR
-Municipio;5107;BRICENO
-Municipio;5113;BURITICA
-Municipio;5120;CACERES
-Municipio;5125;CAICEDO
-Municipio;5129;CALDAS
-Municipio;5134;CAMPAMENTO
-Municipio;5138;CANASGORDAS
-Municipio;5142;CARACOLI
-Municipio;5145;CARAMANTA
-Municipio;5147;CAREPA
-Municipio;5148;EL CARMEN DE VIBORAL
-Municipio;5150;CAROLINA
-Municipio;5154;CAUCASIA
-Municipio;5172;CHIGORODO
-Municipio;5190;CISNEROS
-Municipio;5197;COCORNA
-Municipio;5206;CONCEPCION
-Municipio;5209;CONCORDIA
-Municipio;5212;COPACABANA
-Municipio;5234;DABEIBA
-Municipio;5237;DONMATIAS
-Municipio;5240;EBEJICO
-Municipio;5250;EL BAGRE
-Municipio;5264;ENTRERRIOS
-Municipio;5266;ENVIGADO
-Municipio;5282;FREDONIA
-Municipio;5284;FRONTINO
-Municipio;5306;GIRALDO
-Municipio;5308;GIRARDOTA
-Municipio;5310;GOMEZ PLATA
-Municipio;5313;GRANADA
-Municipio;5315;GUADALUPE
-Municipio;5318;GUARNE
-Municipio;5321;GUATAPE
-Municipio;5347;HELICONIA
-Municipio;5353;HISPANIA
-Municipio;5360;ITAGÜI
-Municipio;5361;ITUANGO
-Municipio;5364;JARDIN
-Municipio;5368;JERICO
-Municipio;5376;LA CEJA
-Municipio;5380;LA ESTRELLA
-Municipio;5390;LA PINTADA
-Municipio;5400;LA UNION
-Municipio;5411;LIBORINA
-Municipio;5425;MACEO
-Municipio;5440;MARINILLA
-Municipio;5467;MONTEBELLO
-Municipio;5475;MURINDO
-Municipio;5480;MUTATA
-Municipio;5483;NARINO
-Municipio;5490;NECOCLI
-Municipio;5495;NECHI
-Municipio;5501;OLAYA
-Municipio;5541;PENOL
-Municipio;5543;PEQUE
-Municipio;5576;PUEBLORRICO
-Municipio;5579;PUERTO BERRIO
-Municipio;5585;PUERTO NARE
-Municipio;5591;PUERTO TRIUNFO
-Municipio;5604;REMEDIOS
-Municipio;5607;RETIRO
-Municipio;5615;RIONEGRO
-Municipio;5628;SABANALARGA
-Municipio;5631;SABANETA
-Municipio;5642;SALGAR
-Municipio;5647;SAN ANDRES DE CUERQUIA
-Municipio;5649;SAN CARLOS
-Municipio;5652;SAN FRANCISCO
-Municipio;5656;SAN JERONIMO
-Municipio;5658;SAN JOSE DE LA MONTANA
-Municipio;5659;SAN JUAN DE URABA
-Municipio;5660;SAN LUIS
-Municipio;5664;SAN PEDRO DE LOS MILAGROS
-Municipio;5665;SAN PEDRO DE URABA
-Municipio;5667;SAN RAFAEL
-Municipio;5670;SAN ROQUE
-Municipio;5674;SAN VICENTE FERRER
-Municipio;5679;SANTA BARBARA
-Municipio;5686;SANTA ROSA DE OSOS
-Municipio;5690;SANTO DOMINGO
-Municipio;5697;EL SANTUARIO
-Municipio;5736;SEGOVIA
-Municipio;5756;SONSON
-Municipio;5761;SOPETRAN
-Municipio;5789;TAMESIS
-Municipio;5790;TARAZA
-Municipio;5792;TARSO
-Municipio;5809;TITIRIBI
-Municipio;5819;TOLEDO
-Municipio;5837;TURBO
-Municipio;5842;URAMITA
-Municipio;5847;URRAO
-Municipio;5854;VALDIVIA
-Municipio;5856;VALPARAISO
-Municipio;5858;VEGACHI
-Municipio;5861;VENECIA
-Municipio;5873;VIGIA DEL FUERTE
-Municipio;5885;YALI
-Municipio;5887;YARUMAL
-Municipio;5890;YOLOMBO
-Municipio;5893;YONDO
-Municipio;5895;ZARAGOZA
-Municipio;8001;BARRANQUILLA
-Municipio;8078;BARANOA
-Municipio;8137;CAMPO DE LA CRUZ
-Municipio;8141;CANDELARIA
-Municipio;8296;GALAPA
-Municipio;8372;JUAN DE ACOSTA
-Municipio;8421;LURUACO
-Municipio;8433;MALAMBO
-Municipio;8436;MANATI
-Municipio;8520;PALMAR DE VARELA
-Municipio;8549;PIOJO
-Municipio;8558;POLONUEVO
-Municipio;8560;PONEDERA
-Municipio;8573;PUERTO COLOMBIA
-Municipio;8606;REPELON
-Municipio;8634;SABANAGRANDE
-Municipio;8638;SABANALARGA
-Municipio;8675;SANTA LUCIA
-Municipio;8685;SANTO TOMAS
-Municipio;8758;SOLEDAD
-Municipio;8770;SUAN
-Municipio;8832;TUBARA
-Municipio;8849;USIACURI
+Municipio;05001;MEDELLIN
+Municipio;05002;ABEJORRAL
+Municipio;05004;ABRIAQUI
+Municipio;05021;ALEJANDRIA
+Municipio;05030;AMAGA
+Municipio;05031;AMALFI
+Municipio;05034;ANDES
+Municipio;05036;ANGELOPOLIS
+Municipio;05038;ANGOSTURA
+Municipio;05040;ANORI
+Municipio;05042;SANTA FE DE ANTIOQUIA
+Municipio;05044;ANZA
+Municipio;05045;APARTADO
+Municipio;05051;ARBOLETES
+Municipio;05055;ARGELIA
+Municipio;05059;ARMENIA
+Municipio;05079;BARBOSA
+Municipio;05086;BELMIRA
+Municipio;05088;BELLO
+Municipio;05091;BETANIA
+Municipio;05093;BETULIA
+Municipio;05101;CIUDAD BOLIVAR
+Municipio;05107;BRICENO
+Municipio;05113;BURITICA
+Municipio;05120;CACERES
+Municipio;05125;CAICEDO
+Municipio;05129;CALDAS
+Municipio;05134;CAMPAMENTO
+Municipio;05138;CANASGORDAS
+Municipio;05142;CARACOLI
+Municipio;05145;CARAMANTA
+Municipio;05147;CAREPA
+Municipio;05148;EL CARMEN DE VIBORAL
+Municipio;05150;CAROLINA
+Municipio;05154;CAUCASIA
+Municipio;05172;CHIGORODO
+Municipio;05190;CISNEROS
+Municipio;05197;COCORNA
+Municipio;05206;CONCEPCION
+Municipio;05209;CONCORDIA
+Municipio;05212;COPACABANA
+Municipio;05234;DABEIBA
+Municipio;05237;DONMATIAS
+Municipio;05240;EBEJICO
+Municipio;05250;EL BAGRE
+Municipio;05264;ENTRERRIOS
+Municipio;05266;ENVIGADO
+Municipio;05282;FREDONIA
+Municipio;05284;FRONTINO
+Municipio;05306;GIRALDO
+Municipio;05308;GIRARDOTA
+Municipio;05310;GOMEZ PLATA
+Municipio;05313;GRANADA
+Municipio;05315;GUADALUPE
+Municipio;05318;GUARNE
+Municipio;05321;GUATAPE
+Municipio;05347;HELICONIA
+Municipio;05353;HISPANIA
+Municipio;05360;ITAGÜI
+Municipio;05361;ITUANGO
+Municipio;05364;JARDIN
+Municipio;05368;JERICO
+Municipio;05376;LA CEJA
+Municipio;05380;LA ESTRELLA
+Municipio;05390;LA PINTADA
+Municipio;05400;LA UNION
+Municipio;05411;LIBORINA
+Municipio;05425;MACEO
+Municipio;05440;MARINILLA
+Municipio;05467;MONTEBELLO
+Municipio;05475;MURINDO
+Municipio;05480;MUTATA
+Municipio;05483;NARINO
+Municipio;05490;NECOCLI
+Municipio;05495;NECHI
+Municipio;05501;OLAYA
+Municipio;05541;PENOL
+Municipio;05543;PEQUE
+Municipio;05576;PUEBLORRICO
+Municipio;05579;PUERTO BERRIO
+Municipio;05585;PUERTO NARE
+Municipio;05591;PUERTO TRIUNFO
+Municipio;05604;REMEDIOS
+Municipio;05607;RETIRO
+Municipio;05615;RIONEGRO
+Municipio;05628;SABANALARGA
+Municipio;05631;SABANETA
+Municipio;05642;SALGAR
+Municipio;05647;SAN ANDRES DE CUERQUIA
+Municipio;05649;SAN CARLOS
+Municipio;05652;SAN FRANCISCO
+Municipio;05656;SAN JERONIMO
+Municipio;05658;SAN JOSE DE LA MONTANA
+Municipio;05659;SAN JUAN DE URABA
+Municipio;05660;SAN LUIS
+Municipio;05664;SAN PEDRO DE LOS MILAGROS
+Municipio;05665;SAN PEDRO DE URABA
+Municipio;05667;SAN RAFAEL
+Municipio;05670;SAN ROQUE
+Municipio;05674;SAN VICENTE FERRER
+Municipio;05679;SANTA BARBARA
+Municipio;05686;SANTA ROSA DE OSOS
+Municipio;05690;SANTO DOMINGO
+Municipio;05697;EL SANTUARIO
+Municipio;05736;SEGOVIA
+Municipio;05756;SONSON
+Municipio;05761;SOPETRAN
+Municipio;05789;TAMESIS
+Municipio;05790;TARAZA
+Municipio;05792;TARSO
+Municipio;05809;TITIRIBI
+Municipio;05819;TOLEDO
+Municipio;05837;TURBO
+Municipio;05842;URAMITA
+Municipio;05847;URRAO
+Municipio;05854;VALDIVIA
+Municipio;05856;VALPARAISO
+Municipio;05858;VEGACHI
+Municipio;05861;VENECIA
+Municipio;05873;VIGIA DEL FUERTE
+Municipio;05885;YALI
+Municipio;05887;YARUMAL
+Municipio;05890;YOLOMBO
+Municipio;05893;YONDO
+Municipio;05895;ZARAGOZA
+Municipio;08001;BARRANQUILLA
+Municipio;08078;BARANOA
+Municipio;08137;CAMPO DE LA CRUZ
+Municipio;08141;CANDELARIA
+Municipio;08296;GALAPA
+Municipio;08372;JUAN DE ACOSTA
+Municipio;08421;LURUACO
+Municipio;08433;MALAMBO
+Municipio;08436;MANATI
+Municipio;08520;PALMAR DE VARELA
+Municipio;08549;PIOJO
+Municipio;08558;POLONUEVO
+Municipio;08560;PONEDERA
+Municipio;08573;PUERTO COLOMBIA
+Municipio;08606;REPELON
+Municipio;08634;SABANAGRANDE
+Municipio;08638;SABANALARGA
+Municipio;08675;SANTA LUCIA
+Municipio;08685;SANTO TOMAS
+Municipio;08758;SOLEDAD
+Municipio;08770;SUAN
+Municipio;08832;TUBARA
+Municipio;08849;USIACURI
 Municipio;11001;BOGOTA, D.C.
 Municipio;13001;CARTAGENA DE INDIAS
 Municipio;13006;ACHI
