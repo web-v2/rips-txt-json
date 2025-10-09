@@ -159,15 +159,16 @@
 
 
         toast({
-          title: "¡Éxito!",
+          title: "✅ Éxito!",
           description: "El archivo RIPS ha sido generado correctamente.",
+          className: "bg-green-600 text-white", 
         });
 
       } catch (error) {
         console.error('Error procesando archivos:', error);
         toast({
-          title: "Error",
-          description: "Ocurrió un error al procesar los archivos. Verifica el formato.",
+          title: "❌ Error al procesar",
+          description: ''+error,
           variant: "destructive"
         });
       } finally {

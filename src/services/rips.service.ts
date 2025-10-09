@@ -41,7 +41,6 @@ export class RipsService {
     medicamentosCSV?: string;
     otrosServiciosCSV?: string;
   } {
-    // Transacción
     const transaccionHeaders = [
       "numDocumentoIdObligado",
       "numFactura",
@@ -341,10 +340,12 @@ export class RipsService {
     const lines = text.split("\n").filter((line) => line.trim());
 
     return lines.map((line, index) => {
-      const valores = line.split(",");
+      const valores = line.split(",").map((v) => v.trim());
       if (valores.length !== 11) {
         throw new Error(
-          `Error en los Usuarios ${index + 1}: cantidad incorrecta de columnas`
+          `Cantidad incorrecta de columnas en el archivo de Usuarios, linea: ${
+            index + 1
+          }`
         );
       }
 
@@ -393,7 +394,9 @@ export class RipsService {
       const valores = line.split(",");
       if (valores.length !== 22) {
         throw new Error(
-          `Error en las Consultas ${index + 1}: cantidad incorrecta de columnas`
+          `Cantidad incorrecta de columnas en el archivo de Consultas, linea: ${
+            index + 1
+          }`
         );
       }
 
@@ -465,9 +468,9 @@ export class RipsService {
       const valores = line.split(",");
       if (valores.length !== 21) {
         throw new Error(
-          `Error en los Procedimientos ${
+          `Cantidad incorrecta de columnas en el archivo de Procedimientos, linea: ${
             index + 1
-          }: cantidad incorrecta de columnas`
+          }`
         );
       }
 
@@ -535,7 +538,9 @@ export class RipsService {
       const valores = line.split(",");
       if (valores.length !== 13) {
         throw new Error(
-          `Error en las Urgencias ${index + 1}: cantidad incorrecta de columnas`
+          `Cantidad incorrecta de columnas en el archivo de Urgencias, linea: ${
+            index + 1
+          }`
         );
       }
 
@@ -587,9 +592,9 @@ export class RipsService {
       const valores = line.split(",");
       if (valores.length !== 16) {
         throw new Error(
-          `Error en las Hospitalizaciones ${
+          `Cantidad incorrecta de columnas en el archivo de Hospitalización, linea: ${
             index + 1
-          }: cantidad incorrecta de columnas`
+          }`
         );
       }
 
@@ -647,9 +652,9 @@ export class RipsService {
       const valores = line.split(",");
       if (valores.length !== 24) {
         throw new Error(
-          `Error de los Medicamentos ${
+          `Cantidad incorrecta de columnas en el archivo de Medicamentos, linea: ${
             index + 1
-          }: cantidad incorrecta de columnas`
+          }`
         );
       }
 
@@ -731,9 +736,9 @@ export class RipsService {
 
       if (valores.length !== 17) {
         throw new Error(
-          `Error en OtrosServicios línea ${
+          `Cantidad incorrecta de columnas en el archivo de Otros servicios, linea: ${
             index + 1
-          }: cantidad incorrecta de columnas`
+          }`
         );
       }
 
