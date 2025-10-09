@@ -92,6 +92,26 @@
       return true;
     };
 
+    const listarDuplicados=(duplicados:Usuario[])=>{
+      if (duplicados.length > 0) {                      
+          toast({
+            title: "Advertencia",
+            description: (
+              <div>
+                <p>Se encontraron {duplicados.length} usuarios duplicados:</p>
+                <ul className="list-disc pl-4">
+                  {duplicados.slice(0, 5).map((u, i) => (
+                    <li key={i}>{u.numDocumentoIdentificacion}</li>
+                  ))}
+                </ul>
+                {duplicados.length > 5 && <p>...y más</p>}
+              </div>
+            ),
+            className: "bg-yellow-500 text-black",
+          });        
+        }
+    };
+
     const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
     const generateRips = async () => {
@@ -103,8 +123,9 @@
       try {
         // Parsear archivos
         setProgress(20);
-        const usuarios: Usuario[] = await ripsService.parseUsuarios(usuarioFile!);
-        
+        const {usuarios, duplicados } = await ripsService.parseUsuarios(usuarioFile!);
+        listarDuplicados(duplicados);
+
         await sleep(2000);
         setProgress(30);
         const consultas: Consulta[] = consultasFile ? await ripsService.parseConsultas(consultasFile) : [];
@@ -156,7 +177,6 @@
           medicamentos: medicamentos.length,
           otrosServicios: otrosServ.length
         });
-
 
         toast({
           title: "✅ Éxito!",

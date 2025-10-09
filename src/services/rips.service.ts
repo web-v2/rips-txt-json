@@ -1,3 +1,4 @@
+import Papa from "papaparse";
 import {
   RIPS,
   Usuario,
@@ -7,6 +8,7 @@ import {
   Hospitalizacion,
   Medicamento,
   OtrosServicio,
+  TipoDocumentoIdentificacion,
 } from "../types/rips.interfaces";
 export class RipsService {
   private cambiarFormatoFecha(fecha: string): string {
@@ -335,461 +337,552 @@ export class RipsService {
     };
   }
 
-  async parseUsuarios(file: File): Promise<Usuario[]> {
-    const text = await this.readFileAsText(file);
-    const lines = text.split("\n").filter((line) => line.trim());
+  async parseUsuarios(
+    file: File
+  ): Promise<{ usuarios: Usuario[]; duplicados: Usuario[] }> {
+    return new Promise((resolve, reject) => {
+      Papa.parse(file, {
+        header: false,
+        skipEmptyLines: true,
+        complete: (results) => {
+          try {
+            const usuarios: Usuario[] = [];
+            const duplicados: Usuario[] = [];
+            const seen = new Set<string>();
 
-    return lines.map((line, index) => {
-      const valores = line.split(",").map((v) => v.trim());
-      if (valores.length !== 11) {
-        throw new Error(
-          `Cantidad incorrecta de columnas en el archivo de Usuarios, linea: ${
-            index + 1
-          }`
-        );
-      }
+            results.data.forEach((row: string[], index: number) => {
+              if (row.length !== 11) {
+                throw new Error(
+                  `Cantidad incorrecta de columnas en el archivo de Usuarios, linea: ${
+                    index + 1
+                  }`
+                );
+              }
 
-      const [
-        tipoDocumentoIdentificacion,
-        numDocumentoIdentificacion,
-        tipoUsuario,
-        fechaNacimientoA,
-        codSexo,
-        codPaisResidencia,
-        codMunicipioResidencia,
-        codZonaTerritorialResidencia,
-        incapacidad,
-        codPaisOrigen,
-        consecutivoStr,
-      ] = line.split(",");
+              const [
+                tipoDocumentoIdentificacion,
+                numDocumentoIdentificacion,
+                tipoUsuario,
+                fechaNacimientoA,
+                codSexo,
+                codPaisResidencia,
+                codMunicipioResidencia,
+                codZonaTerritorialResidencia,
+                incapacidad,
+                codPaisOrigen,
+                consecutivoStr,
+              ] = row.map((v) => (v ?? "").trim());
 
-      const fechaNacimiento = this.cambiarFormatoFecha(fechaNacimientoA);
-      const consecutivo = parseInt(consecutivoStr) || index + 1;
+              const usuario: Usuario = {
+                tipoDocumentoIdentificacion:
+                  tipoDocumentoIdentificacion as TipoDocumentoIdentificacion,
+                numDocumentoIdentificacion,
+                tipoUsuario,
+                fechaNacimiento: this.cambiarFormatoFecha(fechaNacimientoA),
+                codSexo,
+                codPaisResidencia,
+                codMunicipioResidencia,
+                codZonaTerritorialResidencia,
+                incapacidad,
+                codPaisOrigen,
+                consecutivo: parseInt(consecutivoStr) || index + 1,
+                servicios: {
+                  consultas: [],
+                  procedimientos: [],
+                },
+              };
 
-      return {
-        tipoDocumentoIdentificacion,
-        numDocumentoIdentificacion,
-        tipoUsuario,
-        fechaNacimiento,
-        codSexo,
-        codPaisResidencia,
-        codMunicipioResidencia,
-        codZonaTerritorialResidencia,
-        incapacidad,
-        codPaisOrigen,
-        consecutivo,
-        servicios: {
-          consultas: [],
-          procedimientos: [],
+              // Validación de duplicados
+              if (seen.has(numDocumentoIdentificacion)) {
+                duplicados.push(usuario);
+                console.warn(
+                  `⚠️ Duplicado encontrado en línea ${
+                    index + 1
+                  }: Documento ${numDocumentoIdentificacion}`
+                );
+              } else {
+                seen.add(numDocumentoIdentificacion);
+                usuarios.push(usuario);
+              }
+            });
+
+            resolve({ usuarios, duplicados });
+          } catch (err) {
+            reject(err);
+          }
         },
-      } as Usuario;
+        error: (err) => reject(err),
+      });
     });
   }
 
   async parseConsultas(file: File): Promise<Consulta[]> {
-    const text = await this.readFileAsText(file);
-    const lines = text.split("\n").filter((line) => line.trim());
+    return new Promise((resolve, reject) => {
+      Papa.parse(file, {
+        header: false,
+        skipEmptyLines: true,
+        complete: (results) => {
+          try {
+            const consultas: Consulta[] = [];
 
-    return lines.map((line, index) => {
-      const valores = line.split(",");
-      if (valores.length !== 22) {
-        throw new Error(
-          `Cantidad incorrecta de columnas en el archivo de Consultas, linea: ${
-            index + 1
-          }`
-        );
-      }
+            results.data.forEach((row: string[], index: number) => {
+              if (row.length !== 22) {
+                throw new Error(
+                  `Cantidad incorrecta de columnas en el archivo de Consultas, línea: ${
+                    index + 1
+                  }`
+                );
+              }
 
-      const [
-        numDocIdPaciente,
-        codPrestador,
-        fechaInicioAtencionA,
-        numAutorizacion,
-        codConsulta,
-        modalidadGrupoServicioTecSal,
-        grupoServicios,
-        codServicioStr,
-        finalidadTecnologiaSalud,
-        causaMotivoAtencion,
-        codDiagnosticoPrincipal,
-        codDiagnosticoRelacionado1,
-        codDiagnosticoRelacionado2,
-        codDiagnosticoRelacionado3,
-        tipoDiagnosticoPrincipal,
-        tipoDocumentoIdentificacion,
-        numDocumentoIdentificacion,
-        vrServicioStr,
-        conceptoRecaudo,
-        valorPagoModeradorStr,
-        numFEVPagoModerador,
-        consecutivoStr,
-      ] = line.split(",");
+              const [
+                numDocIdPaciente,
+                codPrestador,
+                fechaInicioAtencionA,
+                numAutorizacion,
+                codConsulta,
+                modalidadGrupoServicioTecSal,
+                grupoServicios,
+                codServicioStr,
+                finalidadTecnologiaSalud,
+                causaMotivoAtencion,
+                codDiagnosticoPrincipal,
+                codDiagnosticoRelacionado1,
+                codDiagnosticoRelacionado2,
+                codDiagnosticoRelacionado3,
+                tipoDiagnosticoPrincipal,
+                tipoDocumentoIdentificacion,
+                numDocumentoIdentificacion,
+                vrServicioStr,
+                conceptoRecaudo,
+                valorPagoModeradorStr,
+                numFEVPagoModerador,
+                consecutivoStr,
+              ] = row.map((v) => (v ?? "").trim());
 
-      const codServicio = parseInt(codServicioStr) || 0;
-      const vrServicio = parseFloat(vrServicioStr) || 0;
-      const valorPagoModerador = parseFloat(valorPagoModeradorStr) || 0;
-      const consecutivo = parseInt(consecutivoStr) || 0;
+              const consulta: Consulta = {
+                numDocIdPaciente,
+                codPrestador,
+                fechaInicioAtencion:
+                  this.cambiarFormatoFechaConHora(fechaInicioAtencionA),
+                numAutorizacion: numAutorizacion || null,
+                codConsulta,
+                modalidadGrupoServicioTecSal,
+                grupoServicios,
+                codServicio: parseInt(codServicioStr) || 0,
+                finalidadTecnologiaSalud,
+                causaMotivoAtencion,
+                codDiagnosticoPrincipal,
+                codDiagnosticoRelacionado1: codDiagnosticoRelacionado1 || null,
+                codDiagnosticoRelacionado2: codDiagnosticoRelacionado2 || null,
+                codDiagnosticoRelacionado3: codDiagnosticoRelacionado3 || null,
+                tipoDiagnosticoPrincipal,
+                tipoDocumentoIdentificacion:
+                  tipoDocumentoIdentificacion as TipoDocumentoIdentificacion,
+                numDocumentoIdentificacion,
+                vrServicio: parseFloat(vrServicioStr) || 0,
+                conceptoRecaudo,
+                valorPagoModerador: parseFloat(valorPagoModeradorStr) || 0,
+                numFEVPagoModerador: numFEVPagoModerador || null,
+                consecutivo: parseInt(consecutivoStr) || index + 1,
+              };
 
-      const fechaInicioAtencion =
-        this.cambiarFormatoFechaConHora(fechaInicioAtencionA);
+              consultas.push(consulta);
+            });
 
-      return {
-        numDocIdPaciente: numDocIdPaciente,
-        codPrestador,
-        fechaInicioAtencion,
-        numAutorizacion: numAutorizacion || null,
-        codConsulta,
-        modalidadGrupoServicioTecSal,
-        grupoServicios,
-        codServicio,
-        finalidadTecnologiaSalud,
-        causaMotivoAtencion,
-        codDiagnosticoPrincipal,
-        codDiagnosticoRelacionado1: codDiagnosticoRelacionado1 || null,
-        codDiagnosticoRelacionado2: codDiagnosticoRelacionado2 || null,
-        codDiagnosticoRelacionado3: codDiagnosticoRelacionado3 || null,
-        tipoDiagnosticoPrincipal,
-        tipoDocumentoIdentificacion,
-        numDocumentoIdentificacion: numDocumentoIdentificacion,
-        vrServicio,
-        conceptoRecaudo,
-        valorPagoModerador,
-        numFEVPagoModerador: numFEVPagoModerador || null,
-        consecutivo,
-      } as Consulta;
+            resolve(consultas);
+          } catch (err) {
+            reject(err);
+          }
+        },
+        error: (err) => reject(err),
+      });
     });
   }
 
   async parseProcedimientos(file: File): Promise<Procedimiento[]> {
-    const text = await this.readFileAsText(file);
-    const lines = text.split("\n").filter((line) => line.trim());
+    return new Promise((resolve, reject) => {
+      Papa.parse(file, {
+        header: false,
+        skipEmptyLines: true,
+        complete: (results) => {
+          try {
+            const procedimientos: Procedimiento[] = [];
 
-    return lines.map((line, index) => {
-      const valores = line.split(",");
-      if (valores.length !== 21) {
-        throw new Error(
-          `Cantidad incorrecta de columnas en el archivo de Procedimientos, linea: ${
-            index + 1
-          }`
-        );
-      }
+            results.data.forEach((row: string[], index: number) => {
+              if (row.length !== 21) {
+                throw new Error(
+                  `Cantidad incorrecta de columnas en el archivo de Procedimientos, línea: ${
+                    index + 1
+                  }`
+                );
+              }
 
-      const [
-        numDocIdPaciente,
-        codPrestador,
-        fechaInicioAtencionA,
-        idMIPRES,
-        numAutorizacion,
-        codProcedimiento,
-        viaIngresoServicioSalud,
-        modalidadGrupoServicioTecSal,
-        grupoServicios,
-        codServicioStr,
-        finalidadTecnologiaSalud,
-        tipoDocumentoIdentificacion,
-        numDocumentoIdentificacion,
-        codDiagnosticoPrincipal,
-        codDiagnosticoRelacionado,
-        codComplicacion,
-        vrServicioStr,
-        conceptoRecaudo,
-        valorPagoModeradorStr,
-        numFEVPagoModerador,
-        consecutivoStr,
-      ] = line.split(",");
+              const [
+                numDocIdPaciente,
+                codPrestador,
+                fechaInicioAtencionA,
+                idMIPRES,
+                numAutorizacion,
+                codProcedimiento,
+                viaIngresoServicioSalud,
+                modalidadGrupoServicioTecSal,
+                grupoServicios,
+                codServicioStr,
+                finalidadTecnologiaSalud,
+                tipoDocumentoIdentificacion,
+                numDocumentoIdentificacion,
+                codDiagnosticoPrincipal,
+                codDiagnosticoRelacionado,
+                codComplicacion,
+                vrServicioStr,
+                conceptoRecaudo,
+                valorPagoModeradorStr,
+                numFEVPagoModerador,
+                consecutivoStr,
+              ] = row.map((v) => (v ?? "").trim());
 
-      const codServicio = parseInt(codServicioStr) || 0;
-      const vrServicio = parseFloat(vrServicioStr) || 0;
-      const valorPagoModerador = parseFloat(valorPagoModeradorStr) || 0;
-      const consecutivo = parseInt(consecutivoStr) || 0;
-      const fechaInicioAtencion =
-        this.cambiarFormatoFechaConHora(fechaInicioAtencionA);
-      return {
-        numDocIdPaciente: numDocIdPaciente,
-        codPrestador,
-        fechaInicioAtencion,
-        idMIPRES: idMIPRES || null,
-        numAutorizacion: numAutorizacion || null,
-        codProcedimiento,
-        viaIngresoServicioSalud,
-        modalidadGrupoServicioTecSal,
-        grupoServicios,
-        codServicio,
-        finalidadTecnologiaSalud,
-        tipoDocumentoIdentificacion,
-        numDocumentoIdentificacion: numDocumentoIdentificacion,
-        codDiagnosticoPrincipal,
-        codDiagnosticoRelacionado: codDiagnosticoRelacionado || null,
-        codComplicacion: codComplicacion || null,
-        vrServicio,
-        conceptoRecaudo,
-        valorPagoModerador,
-        numFEVPagoModerador: numFEVPagoModerador || null,
-        consecutivo,
-      } as Procedimiento;
+              const procedimiento: Procedimiento = {
+                numDocIdPaciente,
+                codPrestador,
+                fechaInicioAtencion:
+                  this.cambiarFormatoFechaConHora(fechaInicioAtencionA),
+                idMIPRES: idMIPRES || null,
+                numAutorizacion: numAutorizacion || null,
+                codProcedimiento,
+                viaIngresoServicioSalud,
+                modalidadGrupoServicioTecSal,
+                grupoServicios,
+                codServicio: parseInt(codServicioStr) || 0,
+                finalidadTecnologiaSalud,
+                tipoDocumentoIdentificacion:
+                  tipoDocumentoIdentificacion as TipoDocumentoIdentificacion,
+                numDocumentoIdentificacion,
+                codDiagnosticoPrincipal,
+                codDiagnosticoRelacionado: codDiagnosticoRelacionado || null,
+                codComplicacion: codComplicacion || null,
+                vrServicio: parseFloat(vrServicioStr) || 0,
+                conceptoRecaudo,
+                valorPagoModerador: parseFloat(valorPagoModeradorStr) || 0,
+                numFEVPagoModerador: numFEVPagoModerador || null,
+                consecutivo: parseInt(consecutivoStr) || index + 1,
+              };
+
+              procedimientos.push(procedimiento);
+            });
+
+            resolve(procedimientos);
+          } catch (err) {
+            reject(err);
+          }
+        },
+        error: (err) => reject(err),
+      });
     });
   }
 
   async parseUrgencias(file: File): Promise<Urgencia[]> {
-    const text = await this.readFileAsText(file);
-    const lines = text.split("\n").filter((line) => line.trim());
+    return new Promise((resolve, reject) => {
+      Papa.parse(file, {
+        header: false,
+        skipEmptyLines: true,
+        complete: (results) => {
+          try {
+            const urgencias: Urgencia[] = [];
 
-    return lines.map((line, index) => {
-      const valores = line.split(",");
-      if (valores.length !== 13) {
-        throw new Error(
-          `Cantidad incorrecta de columnas en el archivo de Urgencias, linea: ${
-            index + 1
-          }`
-        );
-      }
+            results.data.forEach((row: string[], index: number) => {
+              if (row.length !== 13) {
+                throw new Error(
+                  `Cantidad incorrecta de columnas en el archivo de Urgencias, línea: ${
+                    index + 1
+                  }`
+                );
+              }
 
-      const [
-        numDocIdPaciente,
-        codPrestador,
-        fechaInicioAtencionStr,
-        causaMotivoAtencion,
-        codDiagnosticoPrincipal,
-        codDiagnosticoPrincipalE,
-        codDiagnosticoRelacionadoE1,
-        codDiagnosticoRelacionadoE2,
-        codDiagnosticoRelacionadoE3,
-        condicionDestinoUsuarioEgreso,
-        codDiagnosticoCausaMuerte,
-        fechaEgresoStr,
-        consecutivoStr,
-      ] = line.split(",");
+              const [
+                numDocIdPaciente,
+                codPrestador,
+                fechaInicioAtencionStr,
+                causaMotivoAtencion,
+                codDiagnosticoPrincipal,
+                codDiagnosticoPrincipalE,
+                codDiagnosticoRelacionadoE1,
+                codDiagnosticoRelacionadoE2,
+                codDiagnosticoRelacionadoE3,
+                condicionDestinoUsuarioEgreso,
+                codDiagnosticoCausaMuerte,
+                fechaEgresoStr,
+                consecutivoStr,
+              ] = row.map((v) => (v ?? "").trim());
 
-      const consecutivo = parseInt(consecutivoStr) || 0;
-      const fechaInicioAtencion = this.cambiarFormatoFechaConHora(
-        fechaInicioAtencionStr
-      );
-      const fechaEgreso = this.cambiarFormatoFechaConHora(fechaEgresoStr);
+              const urgencia: Urgencia = {
+                numDocIdPaciente,
+                codPrestador,
+                fechaInicioAtencion: this.cambiarFormatoFechaConHora(
+                  fechaInicioAtencionStr
+                ),
+                causaMotivoAtencion,
+                codDiagnosticoPrincipal,
+                codDiagnosticoPrincipalE,
+                codDiagnosticoRelacionadoE1:
+                  codDiagnosticoRelacionadoE1 || null,
+                codDiagnosticoRelacionadoE2:
+                  codDiagnosticoRelacionadoE2 || null,
+                codDiagnosticoRelacionadoE3:
+                  codDiagnosticoRelacionadoE3 || null,
+                condicionDestinoUsuarioEgreso:
+                  condicionDestinoUsuarioEgreso || null,
+                codDiagnosticoCausaMuerte: codDiagnosticoCausaMuerte || null,
+                fechaEgreso: this.cambiarFormatoFechaConHora(fechaEgresoStr),
+                consecutivo: parseInt(consecutivoStr) || index + 1,
+              };
 
-      return {
-        numDocIdPaciente: numDocIdPaciente,
-        codPrestador: codPrestador,
-        fechaInicioAtencion,
-        causaMotivoAtencion: causaMotivoAtencion,
-        codDiagnosticoPrincipal: codDiagnosticoPrincipal,
-        codDiagnosticoPrincipalE: codDiagnosticoPrincipalE,
-        codDiagnosticoRelacionadoE1: codDiagnosticoRelacionadoE1 || null,
-        codDiagnosticoRelacionadoE2: codDiagnosticoRelacionadoE2 || null,
-        codDiagnosticoRelacionadoE3: codDiagnosticoRelacionadoE3 || null,
-        condicionDestinoUsuarioEgreso: condicionDestinoUsuarioEgreso || null,
-        codDiagnosticoCausaMuerte: codDiagnosticoCausaMuerte || null,
-        fechaEgreso,
-        consecutivo,
-      } as Urgencia;
+              urgencias.push(urgencia);
+            });
+
+            resolve(urgencias);
+          } catch (err) {
+            reject(err);
+          }
+        },
+        error: (err) => reject(err),
+      });
     });
   }
 
   async parseHospitalizacion(file: File): Promise<Hospitalizacion[]> {
-    const text = await this.readFileAsText(file);
-    const lines = text.split("\n").filter((line) => line.trim());
+    return new Promise((resolve, reject) => {
+      Papa.parse(file, {
+        header: false,
+        skipEmptyLines: true,
+        complete: (results) => {
+          try {
+            const hospitalizaciones: Hospitalizacion[] = [];
 
-    return lines.map((line, index) => {
-      const valores = line.split(",");
-      if (valores.length !== 16) {
-        throw new Error(
-          `Cantidad incorrecta de columnas en el archivo de Hospitalización, linea: ${
-            index + 1
-          }`
-        );
-      }
+            results.data.forEach((row: string[], index: number) => {
+              if (row.length !== 16) {
+                throw new Error(
+                  `Cantidad incorrecta de columnas en el archivo de Hospitalización, línea: ${
+                    index + 1
+                  }`
+                );
+              }
 
-      const [
-        numDocIdPaciente,
-        codPrestador,
-        viaIngresoServicioSalud,
-        fechaInicioAtencionStr,
-        numAutorizacion,
-        causaMotivoAtencion,
-        codDiagnosticoPrincipal,
-        codDiagnosticoPrincipalE,
-        codDiagnosticoRelacionadoE1,
-        codDiagnosticoRelacionadoE2,
-        codDiagnosticoRelacionadoE3,
-        codComplicacion,
-        condicionDestinoUsuarioEgreso,
-        codDiagnosticoCausaMuerte,
-        fechaEgresoStr,
-        consecutivoStr,
-      ] = line.split(",");
+              const [
+                numDocIdPaciente,
+                codPrestador,
+                viaIngresoServicioSalud,
+                fechaInicioAtencionStr,
+                numAutorizacion,
+                causaMotivoAtencion,
+                codDiagnosticoPrincipal,
+                codDiagnosticoPrincipalE,
+                codDiagnosticoRelacionadoE1,
+                codDiagnosticoRelacionadoE2,
+                codDiagnosticoRelacionadoE3,
+                codComplicacion,
+                condicionDestinoUsuarioEgreso,
+                codDiagnosticoCausaMuerte,
+                fechaEgresoStr,
+                consecutivoStr,
+              ] = row.map((v) => (v ?? "").trim());
 
-      const consecutivo = parseInt(consecutivoStr) || 0;
-      const fechaInicioAtencion = this.cambiarFormatoFechaConHora(
-        fechaInicioAtencionStr
-      );
-      const fechaEgreso = this.cambiarFormatoFechaConHora(fechaEgresoStr);
+              const hospitalizacion: Hospitalizacion = {
+                numDocIdPaciente,
+                codPrestador,
+                viaIngresoServicioSalud,
+                fechaInicioAtencion: this.cambiarFormatoFechaConHora(
+                  fechaInicioAtencionStr
+                ),
+                numAutorizacion: numAutorizacion || null,
+                causaMotivoAtencion,
+                codDiagnosticoPrincipal,
+                codDiagnosticoPrincipalE,
+                codDiagnosticoRelacionadoE1:
+                  codDiagnosticoRelacionadoE1 || null,
+                codDiagnosticoRelacionadoE2:
+                  codDiagnosticoRelacionadoE2 || null,
+                codDiagnosticoRelacionadoE3:
+                  codDiagnosticoRelacionadoE3 || null,
+                codComplicacion: codComplicacion || null,
+                condicionDestinoUsuarioEgreso:
+                  condicionDestinoUsuarioEgreso || null,
+                codDiagnosticoCausaMuerte: codDiagnosticoCausaMuerte || null,
+                fechaEgreso: this.cambiarFormatoFechaConHora(fechaEgresoStr),
+                consecutivo: parseInt(consecutivoStr) || index + 1,
+              };
 
-      return {
-        numDocIdPaciente: numDocIdPaciente,
-        codPrestador: codPrestador,
-        viaIngresoServicioSalud: viaIngresoServicioSalud,
-        fechaInicioAtencion,
-        numAutorizacion: numAutorizacion || null,
-        causaMotivoAtencion: causaMotivoAtencion,
-        codDiagnosticoPrincipal: codDiagnosticoPrincipal,
-        codDiagnosticoPrincipalE: codDiagnosticoPrincipalE,
-        codDiagnosticoRelacionadoE1: codDiagnosticoRelacionadoE1 || null,
-        codDiagnosticoRelacionadoE2: codDiagnosticoRelacionadoE2 || null,
-        codDiagnosticoRelacionadoE3: codDiagnosticoRelacionadoE3 || null,
-        codComplicacion: codComplicacion || null,
-        condicionDestinoUsuarioEgreso: condicionDestinoUsuarioEgreso || null,
-        codDiagnosticoCausaMuerte: codDiagnosticoCausaMuerte || null,
-        fechaEgreso,
-        consecutivo,
-      } as Hospitalizacion;
+              hospitalizaciones.push(hospitalizacion);
+            });
+
+            resolve(hospitalizaciones);
+          } catch (err) {
+            reject(err);
+          }
+        },
+        error: (err) => reject(err),
+      });
     });
   }
 
   async parseMedicamentos(file: File): Promise<Medicamento[]> {
-    const text = await this.readFileAsText(file);
-    const lines = text.split("\n").filter((line) => line.trim());
+    return new Promise((resolve, reject) => {
+      Papa.parse(file, {
+        header: false,
+        skipEmptyLines: true,
+        complete: (results) => {
+          try {
+            const medicamentos: Medicamento[] = [];
 
-    return lines.map((line, index) => {
-      const valores = line.split(",");
-      if (valores.length !== 24) {
-        throw new Error(
-          `Cantidad incorrecta de columnas en el archivo de Medicamentos, linea: ${
-            index + 1
-          }`
-        );
-      }
+            results.data.forEach((row: string[], index: number) => {
+              if (row.length !== 24) {
+                throw new Error(
+                  `Cantidad incorrecta de columnas en el archivo de Medicamentos, línea: ${
+                    index + 1
+                  }`
+                );
+              }
 
-      const [
-        numDocIdPaciente,
-        codPrestador,
-        numAutorizacion,
-        idMIPRES,
-        fechaDispensAdmonStr,
-        codDiagnosticoPrincipal,
-        codDiagnosticoRelacionado,
-        tipoMedicamento,
-        codTecnologiaSalud,
-        nomTecnologiaSalud,
-        concentracionMedicamentoStr,
-        unidadMedidaStr,
-        formaFarmaceutica,
-        unidadMinDispensaStr,
-        cantidadMedicamentoStr,
-        diasTratamientoStr,
-        tipoDocumentoIdentificacion,
-        numDocumentoIdentificacion,
-        vrUnitMedicamentoStr,
-        vrServicioStr,
-        conceptoRecaudo,
-        valorPagoModeradorStr,
-        numFEVPagoModerador,
-        consecutivoStr,
-      ] = line.split(",");
+              const [
+                numDocIdPaciente,
+                codPrestador,
+                numAutorizacion,
+                idMIPRES,
+                fechaDispensAdmonStr,
+                codDiagnosticoPrincipal,
+                codDiagnosticoRelacionado,
+                tipoMedicamento,
+                codTecnologiaSalud,
+                nomTecnologiaSalud,
+                concentracionMedicamentoStr,
+                unidadMedidaStr,
+                formaFarmaceutica,
+                unidadMinDispensaStr,
+                cantidadMedicamentoStr,
+                diasTratamientoStr,
+                tipoDocumentoIdentificacion,
+                numDocumentoIdentificacion,
+                vrUnitMedicamentoStr,
+                vrServicioStr,
+                conceptoRecaudo,
+                valorPagoModeradorStr,
+                numFEVPagoModerador,
+                consecutivoStr,
+              ] = row.map((v) => (v ?? "").trim());
 
-      const fechaDispensAdmon =
-        this.cambiarFormatoFechaConHora(fechaDispensAdmonStr);
-      const concentracionMedicamento =
-        parseFloat(concentracionMedicamentoStr) || 0;
-      const unidadMedida = parseInt(unidadMedidaStr) || 0;
-      const unidadMinDispensa = parseInt(unidadMinDispensaStr) || 0;
-      const cantidadMedicamento = parseFloat(cantidadMedicamentoStr) || 0;
-      const diasTratamiento = parseInt(diasTratamientoStr) || 0;
-      const vrUnitMedicamento = parseFloat(vrUnitMedicamentoStr) || 0;
-      const vrServicio = parseFloat(vrServicioStr) || 0;
-      const valorPagoModerador = parseFloat(valorPagoModeradorStr) || 0;
-      const consecutivo = parseInt(consecutivoStr) || 0;
+              const medicamento: Medicamento = {
+                numDocIdPaciente,
+                codPrestador,
+                numAutorizacion: numAutorizacion || null,
+                idMIPRES: idMIPRES || null,
+                fechaDispensAdmon:
+                  this.cambiarFormatoFechaConHora(fechaDispensAdmonStr),
+                codDiagnosticoPrincipal,
+                codDiagnosticoRelacionado: codDiagnosticoRelacionado || null,
+                tipoMedicamento,
+                codTecnologiaSalud,
+                nomTecnologiaSalud,
+                concentracionMedicamento:
+                  parseFloat(concentracionMedicamentoStr) || 0,
+                unidadMedida: parseInt(unidadMedidaStr) || 0,
+                formaFarmaceutica,
+                unidadMinDispensa: parseInt(unidadMinDispensaStr) || 0,
+                cantidadMedicamento: parseFloat(cantidadMedicamentoStr) || 0,
+                diasTratamiento: parseInt(diasTratamientoStr) || 0,
+                tipoDocumentoIdentificacion:
+                  tipoDocumentoIdentificacion as TipoDocumentoIdentificacion,
+                numDocumentoIdentificacion,
+                vrUnitMedicamento: parseFloat(vrUnitMedicamentoStr) || 0,
+                vrServicio: parseFloat(vrServicioStr) || 0,
+                conceptoRecaudo,
+                valorPagoModerador: parseFloat(valorPagoModeradorStr) || 0,
+                numFEVPagoModerador: numFEVPagoModerador || null,
+                consecutivo: parseInt(consecutivoStr) || index + 1,
+              };
 
-      return {
-        numDocIdPaciente,
-        codPrestador,
-        numAutorizacion: numAutorizacion || null,
-        idMIPRES: idMIPRES || null,
-        fechaDispensAdmon,
-        codDiagnosticoPrincipal,
-        codDiagnosticoRelacionado: codDiagnosticoRelacionado || null,
-        tipoMedicamento: tipoMedicamento || null,
-        codTecnologiaSalud: codTecnologiaSalud || null,
-        nomTecnologiaSalud: nomTecnologiaSalud || null,
-        concentracionMedicamento,
-        unidadMedida,
-        formaFarmaceutica: formaFarmaceutica || null,
-        unidadMinDispensa,
-        cantidadMedicamento,
-        diasTratamiento,
-        tipoDocumentoIdentificacion,
-        numDocumentoIdentificacion: numDocumentoIdentificacion,
-        vrUnitMedicamento,
-        vrServicio,
-        conceptoRecaudo,
-        valorPagoModerador,
-        numFEVPagoModerador: numFEVPagoModerador || null,
-        consecutivo,
-      } as Medicamento;
+              medicamentos.push(medicamento);
+            });
+
+            resolve(medicamentos);
+          } catch (err) {
+            reject(err);
+          }
+        },
+        error: (err) => reject(err),
+      });
     });
   }
 
   async parseOtrosServicios(file: File): Promise<OtrosServicio[]> {
-    const text = await this.readFileAsText(file);
-    const lines = text.split("\n").filter((line) => line.trim());
+    return new Promise((resolve, reject) => {
+      Papa.parse(file, {
+        header: false,
+        skipEmptyLines: true,
+        complete: (results) => {
+          try {
+            const otrosServicios: OtrosServicio[] = [];
 
-    return lines.map((line, index) => {
-      const valores = line.split(",");
+            results.data.forEach((row: string[], index: number) => {
+              if (row.length !== 17) {
+                throw new Error(
+                  `Cantidad incorrecta de columnas en el archivo de Otros Servicios, línea: ${
+                    index + 1
+                  }`
+                );
+              }
 
-      if (valores.length !== 17) {
-        throw new Error(
-          `Cantidad incorrecta de columnas en el archivo de Otros servicios, linea: ${
-            index + 1
-          }`
-        );
-      }
+              const [
+                numDocIdPaciente,
+                codPrestador,
+                numAutorizacion,
+                idMIPRES,
+                fechaSuministroTecnologiaStr,
+                tipoOS,
+                codTecnologiaSalud,
+                nomTecnologiaSalud,
+                cantidadOSStr,
+                tipoDocumentoIdentificacion,
+                numDocumentoIdentificacion,
+                vrUnitOSStr,
+                vrServicioStr,
+                conceptoRecaudo,
+                valorPagoModeradorStr,
+                numFEVPagoModerador,
+                consecutivoStr,
+              ] = row.map((v) => (v ?? "").trim());
 
-      const [
-        numDocIdPaciente,
-        codPrestador,
-        numAutorizacion,
-        idMIPRES,
-        fechaSuministroTecnologiaStr,
-        tipoOS,
-        codTecnologiaSalud,
-        nomTecnologiaSalud,
-        cantidadOSStr,
-        tipoDocumentoIdentificacion,
-        numDocumentoIdentificacion,
-        vrUnitOSStr,
-        vrServicioStr,
-        conceptoRecaudo,
-        valorPagoModeradorStr,
-        numFEVPagoModerador,
-        consecutivoStr,
-      ] = valores;
+              const otrosServicio: OtrosServicio = {
+                numDocIdPaciente,
+                codPrestador,
+                numAutorizacion: numAutorizacion || null,
+                idMIPRES: idMIPRES || null,
+                fechaSuministroTecnologia: this.cambiarFormatoFechaConHora(
+                  fechaSuministroTecnologiaStr
+                ),
+                tipoOS,
+                codTecnologiaSalud,
+                nomTecnologiaSalud,
+                cantidadOS: parseFloat(cantidadOSStr) || 0,
+                tipoDocumentoIdentificacion:
+                  tipoDocumentoIdentificacion as TipoDocumentoIdentificacion,
+                numDocumentoIdentificacion,
+                vrUnitOS: parseFloat(vrUnitOSStr) || 0,
+                vrServicio: parseFloat(vrServicioStr) || 0,
+                conceptoRecaudo,
+                valorPagoModerador: parseFloat(valorPagoModeradorStr) || 0,
+                numFEVPagoModerador: numFEVPagoModerador || null,
+                consecutivo: parseInt(consecutivoStr) || index + 1,
+              };
 
-      const fechaSuministroTecnologia = this.cambiarFormatoFechaConHora(
-        fechaSuministroTecnologiaStr
-      );
-      const cantidadOS = parseFloat(cantidadOSStr) || 0;
-      const vrUnitOS = parseFloat(vrUnitOSStr) || 0;
-      const vrServicio = parseFloat(vrServicioStr) || 0;
-      const valorPagoModerador = parseFloat(valorPagoModeradorStr) || 0;
-      const consecutivo = parseInt(consecutivoStr) || 0;
+              otrosServicios.push(otrosServicio);
+            });
 
-      return {
-        numDocIdPaciente,
-        codPrestador,
-        numAutorizacion: numAutorizacion || null,
-        idMIPRES: idMIPRES || null,
-        fechaSuministroTecnologia,
-        tipoOS,
-        codTecnologiaSalud: codTecnologiaSalud || null,
-        nomTecnologiaSalud: nomTecnologiaSalud || null,
-        cantidadOS,
-        tipoDocumentoIdentificacion,
-        numDocumentoIdentificacion: numDocumentoIdentificacion,
-        vrUnitOS,
-        vrServicio,
-        conceptoRecaudo,
-        valorPagoModerador,
-        numFEVPagoModerador: numFEVPagoModerador || null,
-        consecutivo,
-      } as OtrosServicio;
+            resolve(otrosServicios);
+          } catch (err) {
+            reject(err);
+          }
+        },
+        error: (err) => reject(err),
+      });
     });
   }
 
@@ -804,10 +897,9 @@ export class RipsService {
     numDocumentoIdObligado: string,
     numFactura: string
   ): RIPS {
-    // Crear una estructura de RIPS
     const rips: RIPS = {
       numDocumentoIdObligado,
-      numFactura,
+      numFactura: numFactura.toUpperCase(),
       tipoNota: null,
       numNota: null,
       usuarios: [],
@@ -816,7 +908,7 @@ export class RipsService {
     // Hacer una copia de los usuarios para no modificar el original
     const usuariosCopia = [...usuarios];
 
-    // Asignar consultas a usuarios
+    // Asignar servicios a usuarios
     usuariosCopia.forEach((usuario) => {
       //Filtros
       const consultasUsuario = consultas.filter(
@@ -841,7 +933,7 @@ export class RipsService {
         (otros) => otros.numDocIdPaciente === usuario.numDocumentoIdentificacion
       );
 
-      //Mapeo de datos
+      //Mapeo de datos de cada servicio
       const ce = consultasUsuario.map(
         ({ numDocIdPaciente, ...resto }) => resto
       );
@@ -854,7 +946,7 @@ export class RipsService {
       const hosp = hospitalizacionUsuario.map(
         ({ numDocIdPaciente, ...resto }) => resto
       );
-      const me = medicamentosUsuario.map(
+      const med = medicamentosUsuario.map(
         ({ numDocIdPaciente, ...resto }) => resto
       );
       const otr = otrosServUsuario.map(
@@ -866,7 +958,7 @@ export class RipsService {
         procedimientos: proc.length > 0 ? proc : undefined,
         urgencias: urg.length > 0 ? urg : undefined,
         hospitalizacion: hosp.length > 0 ? hosp : undefined,
-        medicamentos: me.length > 0 ? me : undefined,
+        medicamentos: med.length > 0 ? med : undefined,
         otrosServicios: otr.length > 0 ? otr : undefined,
       };
     });
@@ -882,7 +974,7 @@ export class RipsService {
 
     const a = document.createElement("a");
     a.href = url;
-    a.download = filename;
+    a.download = filename.toUpperCase();
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
