@@ -201,7 +201,7 @@ const InvoiceApp = () => {
           <Card className="shadow-lg">
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
-                <FileText className="h-5 w-5" />
+                <FileText className="h-5 w-5 text-red-400" />
                 1. Cargar Archivos XML General
               </CardTitle>
               <CardDescription>
@@ -231,7 +231,7 @@ const InvoiceApp = () => {
           <Card className="shadow-lg">
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
-                <FileText className="h-5 w-5" />
+                <FileText className="h-5 w-5 text-blue-400" />
                 2. Procesar y Descargar
               </CardTitle>
               <CardDescription>

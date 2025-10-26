@@ -129,7 +129,7 @@ export const InvoiceProcessor: React.FC<InvoiceProcessorProps> = ({
       {hasProcessedData && (
         <Card className="p-6 shadow-card">
           <div className="flex items-start space-x-4">
-            <FileSpreadsheet className="w-8 h-8 text-accent mt-1" />
+            <FileSpreadsheet className="w-8 h-8 text-green-400 mt-1" />
             
             <div className="flex-1">
               <h4 className="text-lg font-semibold text-foreground mb-2">
