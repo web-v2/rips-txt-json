@@ -5,7 +5,7 @@ function Footer() {
           © {new Date().getFullYear()} <span className="text-indigo-500 font-bold">Ing. Samir Vergara</span>. Todos los derechos reservados. Para mayor Información: <span className='text-red-500 font-bold'>+57 300 412 2688</span>
         </p>
         <div className="flex space-x-6 text-sm text-gray-500">
-          <span className="font-bold">Versión 5.1</span>
+          <span className="font-bold">Versión 6.0</span>
         </div>
       </div>
   );

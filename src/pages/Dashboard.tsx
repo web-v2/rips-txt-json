@@ -1,4 +1,4 @@
-import { Hospital, Stethoscope, Cog, Repeat, LandPlot} from 'lucide-react';
+import { Hospital, Stethoscope, Cog, Repeat, LandPlot, FileText, ClipboardCheck } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 function Dashboard() {
@@ -46,13 +46,29 @@ function Dashboard() {
           <p className="text-gray-500 mt-2 text-sm">Se agrupan varios archivos json y se descarga un archivo json/csv.</p>
         </Link>
 
+        <Link to="/extractor-xml" className="bg-white border border-red-100 p-6 rounded-xl shadow-sm hover:shadow-lg transition-all duration-300 flex flex-col items-center text-center w-full max-w-xs mx-auto">
+          <div className="mb-4">
+            <FileText className="w-20 h-20 text-indigo-600" />
+          </div>
+          <h2 className="text-lg font-semibold text-indigo-600">Extractor XML</h2>
+          <p className="text-gray-500 mt-2 text-sm">Se extraen las datos relevantes de las facturas electrónicas.</p>
+        </Link>
+
+        <Link to="https://audi-rips-json.netlify.app/" className="bg-white border border-red-100 p-6 rounded-xl shadow-sm hover:shadow-lg transition-all duration-300 flex flex-col items-center text-center w-full max-w-xs mx-auto">
+          <div className="mb-4">
+            <ClipboardCheck className="w-20 h-20 text-purple-600" />
+          </div>
+          <h2 className="text-lg font-semibold text-purple-600">Auditoria RIPS JSON</h2>
+          <p className="text-gray-500 mt-2 text-sm">Módulo de auditoría para RIPS en formato JSON.</p>          
+        </Link>
+
         <Link to="/config" className="bg-white border border-red-100 p-6 rounded-xl shadow-sm hover:shadow-lg transition-all duration-300 flex flex-col items-center text-center w-full max-w-xs mx-auto">
           <div className="mb-4">
-            <Cog className="w-20 h-20 text-indigo-600" />
+            <Cog className="w-20 h-20 text-orange-600" />
           </div>
-          <h2 className="text-lg font-semibold text-indigo-600">Configuraciones</h2>
+          <h2 className="text-lg font-semibold text-orange-600">Configuraciones</h2>
           <p className="text-gray-500 mt-2 text-sm">Módulo de herramientas y configuraciones del sistema.</p>          
-        </Link>
+        </Link>        
 
       </div>
     </div>

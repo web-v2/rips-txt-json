@@ -10,6 +10,7 @@ import Configuraciones from "./pages/Configuraciones";
 import RipsJsonToTXT from "./components/RipsJsonToTXT";
 import RipsConsolidator from "./components/RipsConsolidator";
 import TablasDeReferencias from "./pages/TablasDeReferencias";
+import  InvoiceApp from "./pages/InvoiceApp";
 
 const queryClient = new QueryClient();
 
@@ -24,7 +25,8 @@ const App = () => (
           <Route path="/txt-to-json" element={<RipsGeneratorAll />} />
           <Route path="/json-to-csv" element={<RipsJsonToTXT />} />
           <Route path="/agrupador-json" element={<RipsConsolidator />} />          
-          <Route path="/config" element={<Configuraciones />} />
+          <Route path="/extractor-xml" element={<InvoiceApp />} />
+          <Route path="/config" element={<Configuraciones />} />          
           <Route path="/TablesReferences" element={<TablasDeReferencias />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />

@@ -42,7 +42,18 @@ Permite cargar lotes de archivos `.json` compatibles con las estructuras de un R
 - Descarga de archivos de usuarios.
 - Descarga de archivos de servicios (consultas, procedimientos, medicamentos, hospitalización, urgencias, otros servicios).
 
-### 4. Tablas de Referencia SISPRO
+### 4. Extractor de la data XML de la factura electrónica.
+
+Permite extraer la data relevante de archivos `.xml` compatibles con las estructuras de una factura electrónica para el sector salud en Colombia, valida y une toda la data de los XML, al final puede descargar un CSV.
+
+**Funcionalidades:**
+
+- Cargas los XML.
+- Procesa los XML - El sistema valida la estructura minima para la extracción de la data.
+- Genera estadisticas.
+- Descarga un archivo `.csv` para que pueda ser leido desde un excel.
+
+### 5. Tablas de Referencia SISPRO
 
 Consulta y filtra tablas de referencia oficiales (SISPRO) para códigos y descripciones de servicios, medicamentos, procedimientos, etc.
 
@@ -52,7 +63,7 @@ Consulta y filtra tablas de referencia oficiales (SISPRO) para códigos y descri
 - Filtro por tipo de tabla, código o nombre.
 - Búsqueda rápida y navegación sencilla.
 
-### 5. Página de Ayuda y 404 Personalizada
+### 6. Página de Ayuda y 404 Personalizada
 
 Incluye una sección de ayuda con información útil sobre el uso de la herramienta y una página 404 personalizada para rutas no encontradas.
 
