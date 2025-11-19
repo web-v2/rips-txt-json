@@ -963,6 +963,52 @@ export class RipsService {
       };
     });
 
+    /*
+    usuarios.forEach(usuario => {
+        if (servicios.consultas?.length) {
+            servicios.consultas = servicios.consultas.map((consulta, index) => ({
+                ...consulta,
+                consecutivo: index + 1
+            }));
+        }
+
+        if (servicios.procedimientos?.length) {
+            servicios.procedimientos = servicios.procedimientos.map((proc, index) => ({
+                ...proc,
+                consecutivo: index + 1
+            }));
+        }
+
+        if (servicios.urgencias?.length) {
+            servicios.urgencias = servicios.urgencias.map((urg, index) => ({
+                ...urg,
+                consecutivo: index + 1
+            }));
+        }
+
+        if (servicios.hospitalizacion?.length) {
+            servicios.hospitalizacion = servicios.hospitalizacion.map((hosp, index) => ({
+                ...hosp,
+                consecutivo: index + 1
+            }));
+        }
+
+        if (servicios.medicamentos?.length) {
+            servicios.medicamentos = servicios.medicamentos.map((med, index) => ({
+                ...med,
+                consecutivo: index + 1
+            }));
+        }
+
+        if (servicios.otrosServicios?.length) {
+            servicios.otrosServicios = servicios.otrosServicios.map((otros, index) => ({
+                ...otros,
+                consecutivo: index + 1
+            }));
+        }
+    });    
+    */
+
     rips.usuarios = usuariosCopia;
     return rips;
   }
