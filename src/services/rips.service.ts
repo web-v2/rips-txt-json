@@ -963,11 +963,11 @@ export class RipsService {
       };
     });
 
-    /*
+    /* Cambio version validador 1.4.7 - 2025-11-18 */
     usuarios.forEach(usuario => {
         if (servicios.consultas?.length) {
-            servicios.consultas = servicios.consultas.map((consulta, index) => ({
-                ...consulta,
+            servicios.consultas = servicios.consultas.map((cons, index) => ({
+                ...cons,
                 consecutivo: index + 1
             }));
         }
@@ -1007,7 +1007,7 @@ export class RipsService {
             }));
         }
     });    
-    */
+   
 
     rips.usuarios = usuariosCopia;
     return rips;
