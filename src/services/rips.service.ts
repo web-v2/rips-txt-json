@@ -964,7 +964,7 @@ export class RipsService {
     });
 
     /* Cambio version validador 1.4.7 - 2025-11-18 */
-    usuarios.forEach(usuario => {
+    usuario.forEach(usuario => {
         if (servicios.consultas?.length) {
             servicios.consultas = servicios.consultas.map((cons, index) => ({
                 ...cons,
