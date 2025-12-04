@@ -967,6 +967,64 @@ export class RipsService {
     return rips;
   }
 
+  public corregirConsecutivos(rips: RIPS): RIPS {
+    rips.usuarios.forEach((usuario) => {
+      if (usuario.servicios.consultas?.length) {
+        usuario.servicios.consultas = usuario.servicios.consultas.map(
+          (cons, index) => ({
+            ...cons,
+            consecutivo: index + 1,
+          })
+        );
+      }
+
+      if (usuario.servicios.procedimientos?.length) {
+        usuario.servicios.procedimientos = usuario.servicios.procedimientos.map(
+          (proc, index) => ({
+            ...proc,
+            consecutivo: index + 1,
+          })
+        );
+      }
+
+      if (usuario.servicios.urgencias?.length) {
+        usuario.servicios.urgencias = usuario.servicios.urgencias.map(
+          (urg, index) => ({
+            ...urg,
+            consecutivo: index + 1,
+          })
+        );
+      }
+
+      if (usuario.servicios.hospitalizacion?.length) {
+        usuario.servicios.hospitalizacion =
+          usuario.servicios.hospitalizacion.map((hosp, index) => ({
+            ...hosp,
+            consecutivo: index + 1,
+          }));
+      }
+
+      if (usuario.servicios.medicamentos?.length) {
+        usuario.servicios.medicamentos = usuario.servicios.medicamentos.map(
+          (med, index) => ({
+            ...med,
+            consecutivo: index + 1,
+          })
+        );
+      }
+
+      if (usuario.servicios.otrosServicios?.length) {
+        usuario.servicios.otrosServicios = usuario.servicios.otrosServicios.map(
+          (otros, index) => ({
+            ...otros,
+            consecutivo: index + 1,
+          })
+        );
+      }
+    });
+    return rips;
+  }
+
   public downloadJson(data: any, filename: string): void {
     const json = JSON.stringify(data, null, 2);
     const blob = new Blob([json], { type: "application/json" });

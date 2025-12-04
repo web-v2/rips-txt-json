@@ -126,32 +126,32 @@
         const {usuarios, duplicados } = await ripsService.parseUsuarios(usuarioFile!);
         listarDuplicados(duplicados);
 
-        await sleep(2000);
+        await sleep(1000);
         setProgress(30);
         const consultas: Consulta[] = consultasFile ? await ripsService.parseConsultas(consultasFile) : [];
         
-        await sleep(2000);
+        await sleep(1000);
         setProgress(40);
         const procedimientos: Procedimiento[] = procedimientosFile ? await ripsService.parseProcedimientos(procedimientosFile) : [];
         
-        await sleep(2000);
+        await sleep(1000);
         setProgress(45);
         const urgencias: Urgencia[] = urgenciasFile ? await ripsService.parseUrgencias(urgenciasFile) : [];
 
-        await sleep(2000);
+        await sleep(1000);
         setProgress(50);
         const hospitalizaciones: Hospitalizacion[] = hospitalizacionFile ? await ripsService.parseHospitalizacion(hospitalizacionFile) : [];
 
-        await sleep(2000);
+        await sleep(1000);
         setProgress(55);
         const medicamentos: Medicamento[] = medicamentosFile ? await ripsService.parseMedicamentos(medicamentosFile) : [];
         
-        await sleep(2000);
+        await sleep(1000);
         setProgress(60);
         const otrosServ: OtrosServicio[] = otrosServiciosFile ? await ripsService.parseOtrosServicios(otrosServiciosFile) : [];
 
         // Agregar datos
-        await sleep(2000);
+        await sleep(1000);
         setProgress(80);
         const rips = ripsService.aggregateDataAll(
           usuarios, 
@@ -165,9 +165,17 @@
           numFactura.trim()
         );       
 
+        //Corrige los consecutivos y los coloca en orden por paciente.
+        const ripsConsecutivos = ripsService.corregirConsecutivos(rips);
+
+        //debugger
+        console.log('Rips Original:', rips);
+        console.log('Rips Consecutivos:', ripsConsecutivos);
+
         await sleep(2000);
-        setProgress(100);        
-        setRipsData(rips);
+        setProgress(100);              
+        
+        setRipsData(ripsConsecutivos);
         setEstadisticas({
           usuarios: usuarios.length,
           consultas: consultas.length,
