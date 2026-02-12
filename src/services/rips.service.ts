@@ -85,7 +85,7 @@ export class RipsService {
     const usuariosCSV = [
       usuariosHeaders.join(","),
       ...rips.usuarios.map((u) =>
-        usuariosHeaders.map((h) => u[h] ?? "").join(",")
+        usuariosHeaders.map((h) => u[h] ?? "").join(","),
       ),
     ].join("\n");
 
@@ -119,10 +119,12 @@ export class RipsService {
       (u.servicios.consultas ?? []).map((p) =>
         consultasHeaders
           .map((h) =>
-            h === "numDocIdPaciente" ? u.numDocumentoIdentificacion : p[h] ?? ""
+            h === "numDocIdPaciente"
+              ? u.numDocumentoIdentificacion
+              : (p[h] ?? ""),
           )
-          .join(",")
-      )
+          .join(","),
+      ),
     );
 
     const consultasCSV =
@@ -159,10 +161,12 @@ export class RipsService {
       (u.servicios.procedimientos ?? []).map((p) =>
         procedimientosHeaders
           .map((h) =>
-            h === "numDocIdPaciente" ? u.numDocumentoIdentificacion : p[h] ?? ""
+            h === "numDocIdPaciente"
+              ? u.numDocumentoIdentificacion
+              : (p[h] ?? ""),
           )
-          .join(",")
-      )
+          .join(","),
+      ),
     );
 
     const procedimientosCSV =
@@ -193,10 +197,10 @@ export class RipsService {
           .map((h) =>
             h === "numDocIdPaciente"
               ? u.numDocumentoIdentificacion
-              : urg[h] ?? ""
+              : (urg[h] ?? ""),
           )
-          .join(",")
-      )
+          .join(","),
+      ),
     );
 
     const urgenciasCSV =
@@ -230,10 +234,10 @@ export class RipsService {
           .map((h) =>
             h === "numDocIdPaciente"
               ? u.numDocumentoIdentificacion
-              : hosp[h] ?? ""
+              : (hosp[h] ?? ""),
           )
-          .join(",")
-      )
+          .join(","),
+      ),
     );
 
     const hospitalizacionCSV =
@@ -275,10 +279,10 @@ export class RipsService {
           .map((h) =>
             h === "numDocIdPaciente"
               ? u.numDocumentoIdentificacion
-              : med[h] ?? ""
+              : (med[h] ?? ""),
           )
-          .join(",")
-      )
+          .join(","),
+      ),
     );
 
     const medicamentosCSV =
@@ -313,10 +317,10 @@ export class RipsService {
           .map((h) =>
             h === "numDocIdPaciente"
               ? u.numDocumentoIdentificacion
-              : otr[h] ?? ""
+              : (otr[h] ?? ""),
           )
-          .join(",")
-      )
+          .join(","),
+      ),
     );
 
     const otrosServiciosCSV =
@@ -338,7 +342,7 @@ export class RipsService {
   }
 
   async parseUsuarios(
-    file: File
+    file: File,
   ): Promise<{ usuarios: Usuario[]; duplicados: Usuario[] }> {
     return new Promise((resolve, reject) => {
       Papa.parse(file, {
@@ -355,7 +359,7 @@ export class RipsService {
                 throw new Error(
                   `Cantidad incorrecta de columnas en el archivo de Usuarios, linea: ${
                     index + 1
-                  }`
+                  }`,
                 );
               }
 
@@ -398,7 +402,7 @@ export class RipsService {
                 console.warn(
                   `⚠️ Duplicado encontrado en línea ${
                     index + 1
-                  }: Documento ${numDocumentoIdentificacion}`
+                  }: Documento ${numDocumentoIdentificacion}`,
                 );
               } else {
                 seen.add(numDocumentoIdentificacion);
@@ -430,7 +434,7 @@ export class RipsService {
                 throw new Error(
                   `Cantidad incorrecta de columnas en el archivo de Consultas, línea: ${
                     index + 1
-                  }`
+                  }`,
                 );
               }
 
@@ -513,7 +517,7 @@ export class RipsService {
                 throw new Error(
                   `Cantidad incorrecta de columnas en el archivo de Procedimientos, línea: ${
                     index + 1
-                  }`
+                  }`,
                 );
               }
 
@@ -594,7 +598,7 @@ export class RipsService {
                 throw new Error(
                   `Cantidad incorrecta de columnas en el archivo de Urgencias, línea: ${
                     index + 1
-                  }`
+                  }`,
                 );
               }
 
@@ -618,7 +622,7 @@ export class RipsService {
                 numDocIdPaciente,
                 codPrestador,
                 fechaInicioAtencion: this.cambiarFormatoFechaConHora(
-                  fechaInicioAtencionStr
+                  fechaInicioAtencionStr,
                 ),
                 causaMotivoAtencion,
                 codDiagnosticoPrincipal,
@@ -663,7 +667,7 @@ export class RipsService {
                 throw new Error(
                   `Cantidad incorrecta de columnas en el archivo de Hospitalización, línea: ${
                     index + 1
-                  }`
+                  }`,
                 );
               }
 
@@ -691,7 +695,7 @@ export class RipsService {
                 codPrestador,
                 viaIngresoServicioSalud,
                 fechaInicioAtencion: this.cambiarFormatoFechaConHora(
-                  fechaInicioAtencionStr
+                  fechaInicioAtencionStr,
                 ),
                 numAutorizacion: numAutorizacion || null,
                 causaMotivoAtencion,
@@ -738,7 +742,7 @@ export class RipsService {
                 throw new Error(
                   `Cantidad incorrecta de columnas en el archivo de Medicamentos, línea: ${
                     index + 1
-                  }`
+                  }`,
                 );
               }
 
@@ -826,7 +830,7 @@ export class RipsService {
                 throw new Error(
                   `Cantidad incorrecta de columnas en el archivo de Otros Servicios, línea: ${
                     index + 1
-                  }`
+                  }`,
                 );
               }
 
@@ -856,7 +860,7 @@ export class RipsService {
                 numAutorizacion: numAutorizacion || null,
                 idMIPRES: idMIPRES || null,
                 fechaSuministroTecnologia: this.cambiarFormatoFechaConHora(
-                  fechaSuministroTecnologiaStr
+                  fechaSuministroTecnologiaStr,
                 ),
                 tipoOS,
                 codTecnologiaSalud,
@@ -895,7 +899,7 @@ export class RipsService {
     medicamentos: Medicamento[],
     otrosServicios: OtrosServicio[],
     numDocumentoIdObligado: string,
-    numFactura: string
+    numFactura: string,
   ): RIPS {
     const rips: RIPS = {
       numDocumentoIdObligado,
@@ -913,44 +917,45 @@ export class RipsService {
       //Filtros
       const consultasUsuario = consultas.filter(
         (consulta) =>
-          consulta.numDocIdPaciente === usuario.numDocumentoIdentificacion
+          consulta.numDocIdPaciente === usuario.numDocumentoIdentificacion,
       );
       const procedimientosUsuario = procedimientos.filter(
         (procedimiento) =>
-          procedimiento.numDocIdPaciente === usuario.numDocumentoIdentificacion
+          procedimiento.numDocIdPaciente === usuario.numDocumentoIdentificacion,
       );
       const urgenciaUsuario = urgencias.filter(
         (urgencia) =>
-          urgencia.numDocIdPaciente === usuario.numDocumentoIdentificacion
+          urgencia.numDocIdPaciente === usuario.numDocumentoIdentificacion,
       );
       const hospitalizacionUsuario = hospitalizacion.filter(
-        (hosp) => hosp.numDocIdPaciente === usuario.numDocumentoIdentificacion
+        (hosp) => hosp.numDocIdPaciente === usuario.numDocumentoIdentificacion,
       );
       const medicamentosUsuario = medicamentos.filter(
-        (med) => med.numDocIdPaciente === usuario.numDocumentoIdentificacion
+        (med) => med.numDocIdPaciente === usuario.numDocumentoIdentificacion,
       );
       const otrosServUsuario = otrosServicios.filter(
-        (otros) => otros.numDocIdPaciente === usuario.numDocumentoIdentificacion
+        (otros) =>
+          otros.numDocIdPaciente === usuario.numDocumentoIdentificacion,
       );
 
       //Mapeo de datos de cada servicio
       const ce = consultasUsuario.map(
-        ({ numDocIdPaciente, ...resto }) => resto
+        ({ numDocIdPaciente, ...resto }) => resto,
       );
       const proc = procedimientosUsuario.map(
-        ({ numDocIdPaciente, ...resto }) => resto
+        ({ numDocIdPaciente, ...resto }) => resto,
       );
       const urg = urgenciaUsuario.map(
-        ({ numDocIdPaciente, ...resto }) => resto
+        ({ numDocIdPaciente, ...resto }) => resto,
       );
       const hosp = hospitalizacionUsuario.map(
-        ({ numDocIdPaciente, ...resto }) => resto
+        ({ numDocIdPaciente, ...resto }) => resto,
       );
       const med = medicamentosUsuario.map(
-        ({ numDocIdPaciente, ...resto }) => resto
+        ({ numDocIdPaciente, ...resto }) => resto,
       );
       const otr = otrosServUsuario.map(
-        ({ numDocIdPaciente, ...resto }) => resto
+        ({ numDocIdPaciente, ...resto }) => resto,
       );
 
       usuario.servicios = {
@@ -974,7 +979,7 @@ export class RipsService {
           (cons, index) => ({
             ...cons,
             consecutivo: index + 1,
-          })
+          }),
         );
       }
 
@@ -983,7 +988,7 @@ export class RipsService {
           (proc, index) => ({
             ...proc,
             consecutivo: index + 1,
-          })
+          }),
         );
       }
 
@@ -992,7 +997,7 @@ export class RipsService {
           (urg, index) => ({
             ...urg,
             consecutivo: index + 1,
-          })
+          }),
         );
       }
 
@@ -1009,7 +1014,7 @@ export class RipsService {
           (med, index) => ({
             ...med,
             consecutivo: index + 1,
-          })
+          }),
         );
       }
 
@@ -1018,7 +1023,7 @@ export class RipsService {
           (otros, index) => ({
             ...otros,
             consecutivo: index + 1,
-          })
+          }),
         );
       }
     });
@@ -1032,7 +1037,7 @@ export class RipsService {
 
     const a = document.createElement("a");
     a.href = url;
-    a.download = filename.toUpperCase();
+    a.download = filename;
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
