@@ -238,7 +238,7 @@
               </div>
             </div>
             <h1 className="text-4xl font-bold mb-2 bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
-              Generador de RIPS TXT a JSON
+              Resolución 0948 de 2026 - Generador de RIPS TXT a JSON
             </h1>
             <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
               Herramienta profesional para convertir RIPS en formato TXT para generar el RIPS a JSON, ideal para capita o PGP.              

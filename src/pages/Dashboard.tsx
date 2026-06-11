@@ -1,4 +1,4 @@
-import { Hospital, Stethoscope, Cog, Repeat, LandPlot, FileText, ClipboardCheck } from 'lucide-react';
+import { Hospital, Stethoscope, Cog, Repeat, LandPlot, FileText, ClipboardCheck, CalendarClock } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 function Dashboard() {
@@ -68,7 +68,15 @@ function Dashboard() {
           </div>
           <h2 className="text-lg font-semibold text-orange-600">Configuraciones</h2>
           <p className="text-gray-500 mt-2 text-sm">Módulo de herramientas y configuraciones del sistema.</p>          
-        </Link>        
+        </Link>  
+
+        <Link to="/res948" className="bg-white border border-indigo-100 p-6 rounded-xl shadow-sm hover:shadow-lg transition-all duration-300 flex flex-col items-center text-center w-full max-w-xs mx-auto">
+          <div className="mb-4">
+            <CalendarClock className="w-20 h-20 text-indigo-600" />
+          </div>
+          <h2 className="text-lg font-semibold text-indigo-600">RES 0948 de 2026 - TXT a JSON</h2>
+          <p className="text-gray-500 mt-2 text-sm">Módulo para convertir archivos TXT a JSON según la RES 0948 de 2026.</p>          
+        </Link>       
 
       </div>
     </div>

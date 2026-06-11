@@ -378,8 +378,7 @@ export class RipsService {
               ] = row.map((v) => (v ?? "").trim());
 
               const usuario: Usuario = {
-                tipoDocumentoIdentificacion:
-                  tipoDocumentoIdentificacion as TipoDocumentoIdentificacion,
+                tipoDocumentoIdentificacion: tipoDocumentoIdentificacion as TipoDocumentoIdentificacion,
                 numDocumentoIdentificacion,
                 tipoUsuario,
                 fechaNacimiento: this.cambiarFormatoFecha(fechaNacimientoA),
