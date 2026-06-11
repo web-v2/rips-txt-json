@@ -15,7 +15,7 @@ export default function PageUnderConstruction() {
 
         <p className="mt-4 text-muted-foreground">
           Esta sección aún se encuentra en desarrollo. Estamos preparando nuevas
-          funcionalidades para mejorar tu experiencia.
+          funcionalidades para mejorar tu experiencia de acuerdo a las nuevas normativas vigentes.
         </p>
 
         <div className="mt-8">
