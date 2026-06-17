@@ -35,7 +35,17 @@ const RipsJsonToTXT = () => {
 
 const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
   const file = event.target.files?.[0];
-  if (file) setJsonFile(file);
+  if (file.type !== 'application/json') {
+        event.target.value = '';
+        toast({ 
+          title: "Archivo inválido",
+          description: "Por favor selecciona un archivo de JSON válido.",
+          variant: "destructive"
+        });
+        return;
+      }else{
+    if (file) setJsonFile(file);
+  }
 };
 
 const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));

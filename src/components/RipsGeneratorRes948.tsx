@@ -7,7 +7,7 @@
   import { Alert, AlertDescription } from '@/components/ui/alert';
   import { Progress } from '@/components/ui/progress';
   import { Download, Upload, FileText, Users, Hospital, Stethoscope, Syringe, Microscope, Ambulance, BriefcaseMedical, Package } from 'lucide-react';
-  import { RipsService } from '../services/rips.service';
+  import { RipsServiceRes948 } from '../services/rips948.service';
   import { RIPS, Usuario, Medicamento, OtrosServicio, Consulta, Procedimiento, Urgencia, Hospitalizacion } from '../types/rips.interfaces';
   import { useToast } from '@/hooks/use-toast';
   import BackToDashboardButton from './Volver';
@@ -38,7 +38,7 @@
       otrosServicios: number;
     } | null>(null);
 
-    const ripsService = new RipsService();
+    const ripsServiceRes948 = new RipsServiceRes948();
     const { toast } = useToast();
 
     const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>, tipo: 'usuario' | 'consultas' | 'procedimientos' | 'urgencias' | 'hospitalizaciones' | 'medicamentos' | 'otrosServicios') => {
@@ -132,38 +132,38 @@
 
       try {
         // Parsear archivos
-        setProgress(20);
-        const {usuarios, duplicados } = await ripsService.parseUsuarios(usuarioFile!);
+        setProgress(10);
+        const {usuarios, duplicados } = await ripsServiceRes948.parseUsuarios(usuarioFile!);
         listarDuplicados(duplicados);
 
         await sleep(1000);
-        setProgress(30);
-        const consultas: Consulta[] = consultasFile ? await ripsService.parseConsultas(consultasFile) : [];
+        setProgress(20);
+        const consultas: Consulta[] = consultasFile ? await ripsServiceRes948.parseConsultas(consultasFile) : [];
         
         await sleep(1000);
         setProgress(40);
-        const procedimientos: Procedimiento[] = procedimientosFile ? await ripsService.parseProcedimientos(procedimientosFile) : [];
+        const procedimientos: Procedimiento[] = procedimientosFile ? await ripsServiceRes948.parseProcedimientos(procedimientosFile) : [];
         
-        await sleep(1000);
-        setProgress(45);
-        const urgencias: Urgencia[] = urgenciasFile ? await ripsService.parseUrgencias(urgenciasFile) : [];
-
         await sleep(1000);
         setProgress(50);
-        const hospitalizaciones: Hospitalizacion[] = hospitalizacionFile ? await ripsService.parseHospitalizacion(hospitalizacionFile) : [];
+        const urgencias: Urgencia[] = urgenciasFile ? await ripsServiceRes948.parseUrgencias(urgenciasFile) : [];
 
         await sleep(1000);
-        setProgress(55);
-        const medicamentos: Medicamento[] = medicamentosFile ? await ripsService.parseMedicamentos(medicamentosFile) : [];
+        setProgress(60);
+        const hospitalizaciones: Hospitalizacion[] = hospitalizacionFile ? await ripsServiceRes948.parseHospitalizacion(hospitalizacionFile) : [];
+
+        await sleep(1000);
+        setProgress(70);
+        const medicamentos: Medicamento[] = medicamentosFile ? await ripsServiceRes948.parseMedicamentos(medicamentosFile) : [];
         
         await sleep(1000);
-        setProgress(60);
-        const otrosServ: OtrosServicio[] = otrosServiciosFile ? await ripsService.parseOtrosServicios(otrosServiciosFile) : [];
+        setProgress(80);
+        const otrosServ: OtrosServicio[] = otrosServiciosFile ? await ripsServiceRes948.parseOtrosServicios(otrosServiciosFile) : [];
 
         // Agregar datos
         await sleep(1000);
-        setProgress(80);
-        const rips = ripsService.aggregateDataAll(
+        setProgress(90);
+        const rips = ripsServiceRes948.aggregateDataAll(
           usuarios, 
           consultas, 
           procedimientos, 
@@ -176,11 +176,11 @@
         );       
 
         //Corrige los consecutivos y los coloca en orden por paciente.
-        const ripsConsecutivos = ripsService.corregirConsecutivos(rips);
+        const ripsConsecutivos = ripsServiceRes948.corregirConsecutivos(rips);
 
         //debugger
-        console.log('Rips Original:', rips);
-        console.log('Rips Consecutivos:', ripsConsecutivos);
+        /*console.log('Rips Original:', rips);
+        console.log('Rips Consecutivos:', ripsConsecutivos);*/
 
         await sleep(2000);
         setProgress(100);              
@@ -217,7 +217,7 @@
     const downloadRips = () => {
       if (ripsData) {
         const filename = `${numFactura}.json`;
-        ripsService.downloadJson(ripsData, filename);
+        ripsServiceRes948.downloadJson(ripsData, filename);
         
         toast({
           title: "Descarga iniciada",
@@ -238,7 +238,7 @@
               </div>
             </div>
             <h1 className="text-4xl font-bold mb-2 bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
-              Resolución 0948 de 2026 - Generador de RIPS TXT a JSON
+              Resolución 0948 de 2026 - Generador de RIPS JSON
             </h1>
             <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
               Herramienta profesional para convertir RIPS en formato TXT para generar el RIPS a JSON, ideal para capita o PGP.              

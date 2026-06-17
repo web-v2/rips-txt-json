@@ -18,12 +18,23 @@ const RipsConsolidator = () => {
   const { toast } = useToast();
 
   const handleFilesSelected = (newFiles: File[]) => {
-    setSelectedFiles(prev => [...prev, ...newFiles]);
-    toast({
-      title: "Archivos agregados",
-      description: `${newFiles.length} archivo(s) JSON agregado(s) correctamente`,
-    });
+    //console.log('Archivos seleccionados:', newFiles);
+    for (const file of newFiles) {
+      if (file.type !== 'application/json') {
+        toast({
+          title: "Archivo inválido",
+          description: `El archivo "${file.name}" no es un JSON válido. Por favor selecciona solo archivos JSON.`,
+          variant: "destructive",
+        });
+        return;
+      } 
   };
+  setSelectedFiles(prev => [...prev, ...newFiles]);
+      toast({
+        title: "Archivos agregados",
+        description: `${newFiles.length} archivo(s) JSON agregado(s) correctamente`,
+      });  
+ }
 
   const handleFileRemove = (index: number) => {
     setSelectedFiles(prev => prev.filter((_, i) => i !== index));

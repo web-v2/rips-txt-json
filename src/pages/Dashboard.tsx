@@ -70,7 +70,7 @@ function Dashboard() {
           <p className="text-gray-500 mt-2 text-sm">Módulo de herramientas y configuraciones del sistema.</p>          
         </Link>  
 
-        <Link to="/res948" className="bg-white border border-indigo-100 p-6 rounded-xl shadow-sm hover:shadow-lg transition-all duration-300 flex flex-col items-center text-center w-full max-w-xs mx-auto">
+        <Link to="/txt-to-json-res948" className="bg-white border border-indigo-100 p-6 rounded-xl shadow-sm hover:shadow-lg transition-all duration-300 flex flex-col items-center text-center w-full max-w-xs mx-auto">
           <div className="mb-4">
             <CalendarClock className="w-20 h-20 text-indigo-600" />
           </div>
