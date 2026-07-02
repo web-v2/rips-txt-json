@@ -30,9 +30,7 @@ const App = () => (
           <Route path="/extractor-xml" element={<InvoiceApp />} />
           <Route path="/config" element={<Configuraciones />} />          
           <Route path="/TablesReferences" element={<TablasDeReferencias />} />
-          {/* <Route path="/txt-to-json-res948" element={<RipsGeneratorRes948 />} /> */}
-          <Route path="/txt-to-json-res948" element={<PageUnderConstruction />} />
-          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+          <Route path="/txt-to-json-res948" element={<RipsGeneratorRes948 />} />           
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
