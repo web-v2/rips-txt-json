@@ -24,13 +24,12 @@ const App = () => (
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Dashboard />} />
-          <Route path="/txt-to-json" element={<RipsGeneratorAll />} />
+          <Route path="/txt-to-json-res948" element={<RipsGeneratorRes948 />} />
           <Route path="/json-to-csv" element={<RipsJsonToTXT />} />
           <Route path="/agrupador-json" element={<RipsConsolidator />} />          
           <Route path="/extractor-xml" element={<InvoiceApp />} />
           <Route path="/config" element={<Configuraciones />} />          
           <Route path="/TablesReferences" element={<TablasDeReferencias />} />
-          <Route path="/txt-to-json-res948" element={<RipsGeneratorRes948 />} />           
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
