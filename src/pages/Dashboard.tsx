@@ -22,12 +22,12 @@ function Dashboard() {
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 w-full max-w-6xl">
         
-        <Link to="/txt-to-json" className="bg-white border border-blue-100 p-6 rounded-xl shadow-sm hover:shadow-lg transition-all duration-300 flex flex-col items-center text-center w-full max-w-xs mx-auto">
+        <Link to="/txt-to-json-res948" className="bg-white border border-blue-100 p-6 rounded-xl shadow-sm hover:shadow-lg transition-all duration-300 flex flex-col items-center text-center w-full max-w-xs mx-auto">
           <div className="mb-4">
             <Stethoscope className="w-20 h-20 text-blue-600" />
           </div>
           <h2 className="text-lg font-semibold text-blue-600">Generador TXT a JSON</h2>
-          <p className="text-gray-500 mt-2 text-sm">Genera RIPS de formato txt a formato json - capita/pgp.</p>
+          <p className="text-gray-500 mt-2 text-sm">Módulo para convertir archivos TXT a JSON según la RES 0948 de 2026.</p>
         </Link>
 
          <Link to="/json-to-csv" className="bg-white border border-green-100 p-6 rounded-xl shadow-sm hover:shadow-lg transition-all duration-300 flex flex-col items-center text-center w-full max-w-xs mx-auto">
@@ -69,14 +69,6 @@ function Dashboard() {
           <h2 className="text-lg font-semibold text-orange-600">Configuraciones</h2>
           <p className="text-gray-500 mt-2 text-sm">Módulo de herramientas y configuraciones del sistema.</p>          
         </Link>  
-
-        <Link to="/txt-to-json-res948" className="bg-white border border-indigo-100 p-6 rounded-xl shadow-sm hover:shadow-lg transition-all duration-300 flex flex-col items-center text-center w-full max-w-xs mx-auto">
-          <div className="mb-4">
-            <CalendarClock className="w-20 h-20 text-indigo-600" />
-          </div>
-          <h2 className="text-lg font-semibold text-indigo-600">RES 0948 de 2026 - TXT a JSON</h2>
-          <p className="text-gray-500 mt-2 text-sm">Módulo para convertir archivos TXT a JSON según la RES 0948 de 2026.</p>          
-        </Link>       
 
       </div>
     </div>
